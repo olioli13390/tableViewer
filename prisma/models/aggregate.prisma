@@ -1,0 +1,6 @@
+model Aggregate {
+    id        Int    @id @default(autoincrement())
+    function  String
+    column    Column @relation(fields: [column_id], references: [id])
+    column_id Int
+}

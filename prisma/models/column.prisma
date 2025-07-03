@@ -1,6 +1,7 @@
 model Column {
-    id        Int    @id @default(autoincrement())
+    id        Int         @id @default(autoincrement())
     name      String
-    wizard    Wizard @relation(fields: [wizard_id], references: [id])
+    wizard    Wizard      @relation(fields: [wizard_id], references: [id])
     wizard_id Int
+    aggregate Aggregate[]
 }
