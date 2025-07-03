@@ -1,9 +1,10 @@
 model User {
-    id           Int      @id @default(autoincrement())
-    siret        Int      @unique
-    company_name String
-    mail         String   @unique
-    password     String
-    created_at   DateTime
+    id                 Int                  @id @default(autoincrement())
+    siret              Int                  @unique
+    company_name       String
+    mail               String               @unique
+    password           String
+    created_at         DateTime
     dataBaseConnection DataBaseConnection[]
+    wizard             Wizard[]
 }
