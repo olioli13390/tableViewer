@@ -4,4 +4,5 @@ model Wizard {
     created_at  DateTime
     user        User     @relation(fields: [user_id], references: [id])
     user_id     Int
+    column      Column[]
 }
