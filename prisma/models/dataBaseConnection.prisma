@@ -1,0 +1,10 @@
+model DataBaseConnection {
+    id           Int        @id @default(autoincrement())
+    host         String
+    port         Int
+    name         String
+    connected_at DateTime
+    user         User       @relation(fields: [user_id], references: [id])
+    user_id      Int
+    sqlQuery     SqlQuery[]
+}

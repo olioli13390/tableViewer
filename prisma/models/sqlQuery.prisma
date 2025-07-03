@@ -1,0 +1,8 @@
+model SqlQuery {
+    id                    Int                @id @default(autoincrement())
+    name                  String
+    sql_text              String             @db.Text
+    created_at            DateTime
+    dataBaseConnection    DataBaseConnection @relation(fields: [id_dataBaseConnection], references: [id])
+    id_dataBaseConnection Int
+}
