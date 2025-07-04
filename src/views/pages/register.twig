@@ -1,0 +1,56 @@
+{% extends "../layout/base.twig" %}
+
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/register.css">
+	<link rel="stylesheet" href="/assets/css/settings.css">
+{% endblock %}
+
+{% block title %}
+	<title>Register</title>
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div class="form-container">
+			<form action="" method="POST">
+				<div class="title">
+					<h4>Create your account</h4>
+					<p>Join us !</p>
+				</div>
+				<div class="fields">
+					<label for="company_name">Company name</label>
+					<input type="text" name="company_name">
+				</div>
+				<div class="fields">
+					<label for="siret">Siret number</label>
+					<input type="text" name="siret">
+				</div>
+				<div class="fields">
+					<label for="mail">Email adress</label>
+					<input type="text" name="mail">
+				</div>
+				<div class="fields">
+					<label for="password">Password
+					</label>
+					<input type="text" name="password">
+				</div>
+				<div class="fields">
+					<label for="confirm-password">Confirm password</label>
+					<input type="text" name="confirm-password">
+				</div>
+				<div class="terms">
+					<label>
+						<input type="checkbox" name="remember">
+						Terms and Privacy policy
+					</label>
+				</div>
+
+				<button id="btn-normal" type="submit">Create account</button>
+				<div class="link-to-signin">
+					<p>Already have an account ?</p>
+					<a href="/login">Log in</a>
+				</div>
+			</form>
+		</div>
+	</main>
+{% endblock %}

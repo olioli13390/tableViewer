@@ -5,5 +5,5 @@ model Column {
     wizard_id    Int
     aggregate    Aggregate[]
     columnJoined ColumnJoined[]
-    Sort         Sort[]
+    sort         Sort[]
 }

@@ -1,0 +1,29 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .form-container {
+        width: 40%;
+        margin: 40px 0;
+
+        .terms {
+            color: grey;
+            padding: 20px 0;
+        }
+
+        .link-to-signin {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    }
+}
+
+
+@media screen and (max-width: 700px) {
+
+    .form-container {
+        width: 80% !important;
+    }
+}

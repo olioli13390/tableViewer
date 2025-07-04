@@ -1,0 +1,46 @@
+{% extends "../layout/base.twig" %}
+
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/login.css">
+	<link rel="stylesheet" href="/assets/css/settings.css">
+{% endblock %}
+
+{% block title %}
+	<title>Register</title>
+{% endblock %}
+
+{% block main %}
+	<main>
+		<div class="form-container">
+			<form action="" method="POST">
+				<div>
+					<h4>Welcome</h4>
+					<p>Log in to your account</p>
+				</div>
+				<div class="fields">
+					<label for="mail">Enter your email
+						<input type="text">
+					</label>
+				</div>
+				<div class="fields">
+					<label for="password">Enter your password
+						<input type="text">
+					</label>
+				</div>
+				<div>
+					<label>
+						<input type="checkbox" name="remember">
+						Remember me
+					</label>
+				</div>
+				<button type="submit">Log In</button>
+			</form>
+			<div class="link-to-signin">
+				<p>Don't have an account ?</p>
+				<a href="/register"></a>
+			</div>
+
+
+		</div>
+	</main>
+{% endblock %}
