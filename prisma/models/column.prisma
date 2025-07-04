@@ -1,7 +1,9 @@
 model Column {
-    id        Int         @id @default(autoincrement())
-    name      String
-    wizard    Wizard      @relation(fields: [wizard_id], references: [id])
-    wizard_id Int
-    aggregate Aggregate[]
+    id           Int            @id @default(autoincrement())
+    name         String
+    wizard       Wizard         @relation(fields: [wizard_id], references: [id])
+    wizard_id    Int
+    aggregate    Aggregate[]
+    columnJoined ColumnJoined[]
+    Sort         Sort[]
 }

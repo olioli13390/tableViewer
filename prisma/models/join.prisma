@@ -1,0 +1,5 @@
+model Join {
+    id        Int    @id @default(autoincrement())
+    condition String
+    columnJoined ColumnJoined[]
+}

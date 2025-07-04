@@ -1,0 +1,7 @@
+model ColumnJoined {
+    id        Int    @id @default(autoincrement())
+    column    Column @relation(fields: [column_id], references: [id])
+    column_id Int
+    join      Join   @relation(fields: [join_id], references: [id])
+    join_id   Int
+}
