@@ -5,4 +5,5 @@ model SqlQuery {
     created_at            DateTime
     dataBaseConnection    DataBaseConnection @relation(fields: [id_dataBaseConnection], references: [id])
     id_dataBaseConnection Int
+    csvFile               CsvFile[]
 }

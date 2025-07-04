@@ -1,0 +1,9 @@
+model CsvFile {
+    id            Int             @id @default(autoincrement())
+    name_csv      String
+    path          String
+    created_at    DateTime
+    sqlQuery      SqlQuery        @relation(fields: [sqlQuery_id], references: [id])
+    sqlQuery_id   Int
+    visualization Visualization[]
+}

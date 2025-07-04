@@ -1,0 +1,11 @@
+model Visualization {
+    id         Int      @id @default(autoincrement())
+    type       String
+    data       String
+    options    String
+    title      String
+    created_at DateTime
+    csvFile    CsvFile  @relation(fields: [csvFile_id], references: [id])
+    csvFile_id Int
+    result Result[]
+}
