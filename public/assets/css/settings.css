@@ -5,6 +5,7 @@ body {
 
 
 header {
+    /* header */
 
     background: #201D1D;
 
@@ -15,8 +16,6 @@ header {
         gap: 10px;
         margin: 0 12px;
     }
-
-
 
     p {
         color: white;
@@ -40,6 +39,8 @@ header {
 }
 
 .fields {
+    /*champs formulaire inscription */
+
     display: flex;
     flex-direction: column;
     padding: 10px 0;
@@ -70,7 +71,7 @@ header {
     border: none;
     border-radius: 7px;
     width: 100%;
-    padding: 20px 0;
+    padding: 15px 0;
     color: white;
     font-size: 1.1em;
 
