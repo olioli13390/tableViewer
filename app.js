@@ -6,7 +6,7 @@ const app = express()
 require('dotenv').config()
 
 app.set('views', './src/views')
-
+app.use(express.urlencoded({ extended: true }))
 app.use(userRoutes)
 app.use(express.static("./public"))
 

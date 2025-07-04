@@ -17,6 +17,29 @@
 					<h4>Create your account</h4>
 					<p>Join us !</p>
 				</div>
+				<div class="error-container">
+					{% if error.company_name %}
+						<p class="error">
+							{{error.company_name}}
+						</p>
+					{% elseif error.siret %}
+						<p class="error">
+							{{error.siret}}
+						</p>
+					{% elseif error.mail %}
+						<p class="error">
+							{{error.mail}}
+						</p>
+					{% elseif error.mail %}
+						<p class="error">
+							{{error.mail}}
+						</p>
+					{% elseif error.confirmPassword %}
+						<p class="error">
+							{{error.confirmPassword}}
+						</p>
+					{% endif %}
+				</div>
 				<div class="fields">
 					<label for="company_name">Company name</label>
 					<input type="text" name="company_name">
@@ -35,8 +58,8 @@
 					<input type="text" name="password">
 				</div>
 				<div class="fields">
-					<label for="confirm-password">Confirm password</label>
-					<input type="text" name="confirm-password">
+					<label for="confirmPassword">Confirm password</label>
+					<input type="text" name="confirmPassword">
 				</div>
 				<div class="terms">
 					<label>
