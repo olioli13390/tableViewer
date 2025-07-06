@@ -1,6 +1,7 @@
 const express = require('express')
 const session = require("express-session")
 const userRoutes = require('./src/routes/userRoutes')
+const mainRoutes = require('./src/routes/mainRoutes')
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(session({
     saveUninitialized: true,
 }))
 app.use(userRoutes)
+app.use(mainRoutes)
 
 app.listen(process.env.PORT, (err) => {
     if (err) {

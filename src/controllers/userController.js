@@ -4,14 +4,8 @@ const prisma = new PrismaClient({}).$extends(hashPasswordExtension)
 const bcrypt = require("bcrypt")
 const session = require('express-session')
 
-exports.getRegister = async (req, res) => {
-    res.render('pages/register.twig')
-}
 
-exports.getLogin = async (req, res) => {
-    const users = await prisma.user.findMany()
-    res.render('pages/login.twig')
-}
+
 
 exports.postUser = async (req, res) => {
     try {
