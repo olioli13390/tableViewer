@@ -3,7 +3,6 @@ const prisma = new PrismaClient({})
 const session = require('express-session')
 
 exports.getRegister = async (req, res) => {
-    const users = await prisma.user.findMany()
     res.render('pages/register.twig')
 }
 
@@ -95,18 +94,36 @@ exports.postUser = async (req, res) => {
     }
 }
 
-// exports.postLogin = async (req, res) => {
-//     try {
-//         const user = await prisma.user.findUnique({
-//             where: {
-//                 id: req.body.id
-//             }
-//         })
+exports.postLogin = async (req, res) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                siret: req.body.siret
+            }
+        })
+        console.log(user);
 
-//         if (user) {
-
-//         }
-//     } catch (error) {
-//         console.log(error);
-//     }
-// } 
+        if (user) {
+            if (req.body.password == user.password) {
+                req.session.user = user
+                return res.redirect("/")
+            }
+            else {
+                return res.render('pages/login.twig', {
+                    error: {
+                        password: "Invalid password"
+                    }
+                })
+            }
+        } else {
+            return res.render('pages/login.twig', {
+                error: {
+                    siret: "Invalid Siret"
+                }
+            })
+            console.log(req.body.password);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+} 
