@@ -18,16 +18,18 @@
 					<p>Log in to your account</p>
 				</div>
 				<div class="fields">
-					<label for="mail">Enter your email</label>
-					<input type="text">
+					<label for="mail">Enter your siret</label>
+					<input type="text" name="login" value="{{company.siret}}">
 				</div>
 				<div class="fields">
 					<label for="password">Enter your password</label>
 					<input type="text">
 				</div>
 				<div class="remember">
-					<input type="checkbox" name="remember">
-					<label for="remember">Remember me</label>
+					<label>
+						<input type="checkbox" name="remember">
+						Remember me
+					</label>
 				</div>
 				<button id="btn-normal" type="submit">Log In</button>
 				<div class="link-to-register">

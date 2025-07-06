@@ -13,6 +13,14 @@ main {
             display: flex;
             align-items: center;
             gap: 10px;
+
+            label:hover {
+                cursor: pointer;
+            }
+
+            input:hover {
+                cursor: pointer;
+            }
         }
 
         .link-to-register {

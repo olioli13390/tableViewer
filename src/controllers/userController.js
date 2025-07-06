@@ -1,5 +1,6 @@
 const { PrismaClient } = require("../../generated/prisma")
 const prisma = new PrismaClient({})
+const session = require('express-session')
 
 exports.getRegister = async (req, res) => {
     const users = await prisma.user.findMany()
@@ -86,10 +87,26 @@ exports.postUser = async (req, res) => {
             })
             res.redirect("/login")
         } else {
-            return res.render('pages/register.twig', { error: { confirmPassword: "Password doesn't match" } })
+            return res.render('pages/register.twig', { error: { confirmPassword: "Password doesn't match" }, user: { ...req.body } })
         }
     } catch (error) {
         console.log(error);
         res.render("pages/register.twig")
     }
 }
+
+// exports.postLogin = async (req, res) => {
+//     try {
+//         const user = await prisma.user.findUnique({
+//             where: {
+//                 id: req.body.id
+//             }
+//         })
+
+//         if (user) {
+
+//         }
+//     } catch (error) {
+//         console.log(error);
+//     }
+// } 
