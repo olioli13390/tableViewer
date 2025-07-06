@@ -1,5 +1,7 @@
 const { PrismaClient } = require("../../generated/prisma")
-const prisma = new PrismaClient({})
+const hashPasswordExtension = require("../services/extensions/hashPassword")
+const prisma = new PrismaClient({}).$extends(hashPasswordExtension)
+const bcrypt = require("bcrypt")
 const session = require('express-session')
 
 exports.getRegister = async (req, res) => {
@@ -75,6 +77,8 @@ exports.postUser = async (req, res) => {
             })
         }
 
+
+
         if (req.body.password == req.body.confirmPassword) {
             const user = await prisma.user.create({
                 data: {
@@ -101,10 +105,9 @@ exports.postLogin = async (req, res) => {
                 siret: req.body.siret
             }
         })
-        console.log(user);
 
         if (user) {
-            if (req.body.password == user.password) {
+            if (await bcrypt.compare(req.body.password, user.password)) {
                 req.session.user = user
                 return res.redirect("/")
             }
@@ -121,7 +124,6 @@ exports.postLogin = async (req, res) => {
                     siret: "Invalid Siret"
                 }
             })
-            console.log(req.body.password);
         }
     } catch (error) {
         console.log(error);
