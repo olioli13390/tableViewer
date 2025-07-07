@@ -78,13 +78,27 @@ header {
 
 }
 
-#btn-normal {
+.btn-normal {
     background-color: #D7155C;
     border: none;
     border-radius: 7px;
     width: 100%;
     padding: 15px 0;
     color: white;
+    font-size: 1em;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.btn-cancel {
+    background-color: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 7px;
+    width: 100%;
+    padding: 15px 0;
+    color: #64748B;
     font-size: 1em;
 
     &:hover {

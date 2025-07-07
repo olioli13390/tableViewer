@@ -39,7 +39,7 @@ exports.getDashboard = async (req, res) => { /// affiche le tableau de bord
 
 exports.getAddConnection = async (req, res) => {
     try {
-        res.render("pages/addConnection.twig")
+        res.render("pages/addConnection.twig", { user: req.session.user })
     } catch (error) {
         console.log(error);
         res.redirect("/login")

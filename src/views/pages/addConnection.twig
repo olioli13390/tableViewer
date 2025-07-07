@@ -7,8 +7,38 @@
 
 
 {% block main %}
-
 	<main>
-		<h1>hello</h1>
+		<div class="form-container">
+			<form action="" method="POST">
+				<div class="title">
+					<h4>DB connection</h4>
+					<p>Choose a db to connect</p>
+				</div>
+				<div class="fields">
+					<label for="host">Host</label>
+					<input type="text" name="host">
+				</div>
+				<div class="fields">
+					<label for="port">Port</label>
+					<input type="text" name="port">
+				</div>
+				<div class="fields">
+					<label for="name">Database name</label>
+					<input type="text" name="name">
+				</div>
+				<div class="fields">
+					<label for="userName">Username</label>
+					<input type="text" name="userName">
+				</div>
+				<div class="fields">
+					<label for="password">Password</label>
+					<input type="text" name="password">
+				</div>
+				<div class="cancel-validate">
+					<a href="/">Cancel</a>
+					<button type="submit" class="btn-normal">Connect</button>
+				</div>
+			</form>
+		</div>
 	</main>
 {% endblock %}
