@@ -23,8 +23,15 @@ main {
             .action-container {
                 display: flex;
                 align-items: center;
+                justify-content: end;
                 gap: 20px;
                 width: 50%;
+
+                form {
+                    box-shadow: none;
+                    padding: 0;
+                    width: 30%;
+                }
             }
         }
 
@@ -71,6 +78,7 @@ main {
 
                     a {
                         text-decoration: none;
+                        color: rgb(0, 115, 255);
 
 
                         &:hover {
