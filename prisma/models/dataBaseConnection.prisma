@@ -4,7 +4,7 @@ model DataBaseConnection {
     host         String
     port         Int
     name         String
-    connected_at DateTime
+    connected_at DateTime   @default(now())
     user         User       @relation(fields: [user_id], references: [id])
     user_id      Int
     sqlQuery     SqlQuery[]

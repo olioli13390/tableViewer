@@ -102,6 +102,7 @@ exports.postLogin = async (req, res) => { /// permet la connexion
             if (await bcrypt.compare(req.body.password, user.password)) {
                 req.session.user = user
                 return res.redirect("/")
+                
             }
             else {
                 return res.render('pages/login.twig', {

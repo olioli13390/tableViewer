@@ -2,6 +2,7 @@ const express = require('express')
 const session = require("express-session")
 const userRoutes = require('./src/routes/userRoutes')
 const mainRoutes = require('./src/routes/mainRoutes')
+const dataBaseConnectionRoutes = require("./src/routes/dataBaseConnection")
 
 const app = express()
 
@@ -17,6 +18,7 @@ app.use(session({
 }))
 app.use(userRoutes)
 app.use(mainRoutes)
+app.use(dataBaseConnectionRoutes)
 
 app.listen(process.env.PORT, (err) => {
     if (err) {
