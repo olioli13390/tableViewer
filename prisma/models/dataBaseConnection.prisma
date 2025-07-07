@@ -1,5 +1,6 @@
 model DataBaseConnection {
     id           Int        @id @default(autoincrement())
+    type         String
     host         String
     port         Int
     name         String
