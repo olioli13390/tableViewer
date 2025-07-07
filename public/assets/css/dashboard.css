@@ -128,6 +128,11 @@ main {
         .action-container {
             width: 100% !important;
             padding: 20px 0;
+            justify-content: center !important;
+
+            form {
+                width: 48% !important;
+            }
         }
     }
 
@@ -144,6 +149,8 @@ main {
     .btn-generate {
         form {
             width: 50% !important;
+            padding-top: 0;
+            padding-right: 0;
         }
     }
 }

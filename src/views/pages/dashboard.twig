@@ -17,9 +17,6 @@
 					<form action="" method="get">
 						<button class="btn-normal">+ Upload CSV</button>
 					</form>
-					<form action="" method="get">
-						<button class="btn-normal">+ New SQL query</button>
-					</form>
 					<form action="/addConnection" method="get">
 						<button class="btn-normal">+ Connect to DB</button>
 					</form>
@@ -31,6 +28,7 @@
 					<div class="infos-container">
 						<h4 class="description">Welcome</h4>
 						<p class="data">{{user.company_name}}</p>
+						<p class="description">Membre depuis {{user.created_at}}</p>
 					</div>
 				</div>
 				<div class="nav-cards">
@@ -66,8 +64,8 @@
 					<div class="file-container">
 						<div class="recent-card-container">
 							<div class="recent-card">
-								<p>Blabla</p>
-								<p class="description">Blabla</p>
+								<p>Analyse CA</p>
+								<p class="description">Format</p>
 							</div>
 							<div class="file-info">
 								<p class="description">2d ago</p>

@@ -32,12 +32,10 @@ exports.getDashboard = async (req, res) => { /// affiche le tableau de bord
     } catch (error) {
         console.log(error);
         res.redirect('/login')
-
     }
-
 }
 
-exports.getAddConnection = async (req, res) => {
+exports.getAddConnection = async (req, res) => { /// affiche formulaire connexion à une db
     try {
         res.render("pages/addConnection.twig", { user: req.session.user })
     } catch (error) {
