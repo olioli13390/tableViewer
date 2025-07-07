@@ -36,6 +36,13 @@ header {
             max-height: 2em;
         }
     }
+
+    .logout {
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    }
 }
 
 .fields {

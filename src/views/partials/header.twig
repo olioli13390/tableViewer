@@ -4,8 +4,10 @@
 			<p>Made in France</p>
 			<img src="/assets/img/france.png" alt="france">
 		</div>
-		<div class="language">
-			<p>choose language</p>
-		</div>
+		{% if user %}
+			<div class="logout">
+				<a href="/disconnect">Log out</a>
+			</div>
+		{% endif %}
 	</div>
 </header>

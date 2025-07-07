@@ -5,9 +5,7 @@ const bcrypt = require("bcrypt")
 const session = require('express-session')
 
 
-
-
-exports.postUser = async (req, res) => {
+exports.postUser = async (req, res) => { /// créer un user
     try {
         const { company_name, siret, mail, password } = req.body
         if (!req.body.company_name.match(/^.+$/)) {
@@ -92,7 +90,7 @@ exports.postUser = async (req, res) => {
     }
 }
 
-exports.postLogin = async (req, res) => {
+exports.postLogin = async (req, res) => { /// permet la connexion
     try {
         const user = await prisma.user.findUnique({
             where: {
@@ -122,4 +120,16 @@ exports.postLogin = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-} 
+}
+
+exports.getDisconnected = async (req, res) => {
+    try {
+        if (req.session.user) {
+            req.session.destroy()
+            res.redirect("/login")
+        }
+    } catch (error) {
+        console.log(error);
+        res.render("/")
+    }
+}
