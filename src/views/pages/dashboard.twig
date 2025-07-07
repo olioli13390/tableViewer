@@ -7,8 +7,75 @@
 
 {% block main %}
 
-	<h1>welcome</h1>
-	{% if user %}
-		<h1>Welcome{{user.siret}}</h1>
-	{% endif %}
+	<main>
+		<div class="dashboard-container">
+			<div class="top-container">
+				<div class="title">
+					<h2>TableViewer</h2>
+				</div>
+				<div class="action-container">
+					<button id="btn-normal">+ Upload CSV</button>
+					<button id="btn-normal">+ New SQL query</button>
+					<button id="btn-normal">+ Connect to DB</button>
+				</div>
+			</div>
+			<div class="mid-container">
+
+				<div class="nav-cards">
+					<div class="infos-container">
+						<h4 class="description">Welcome</h4>
+						<p class="data">{{user.company_name}}</p>
+					</div>
+				</div>
+				<div class="nav-cards">
+					<div class="infos-container">
+						<h4 class="description">Connect to</h4>
+						<p class="data">Db name</p>
+						<p class="description">Bla bla</p>
+					</div>
+				</div>
+				<div class="nav-cards">
+					<div class="infos-container">
+						<h4 class="description">CSV</h4>
+						<p class="data">12</p>
+						<p class="description">Csv uploaded</p>
+					</div>
+				</div>
+				<div class="nav-cards">
+					<div class="infos-container">
+						<h4 class="description">Results</h4>
+						<p class="data">30</p>
+						<p class="description">Charts or table generated</p>
+					</div>
+				</div>
+
+			</div>
+			<div class="bottom-container">
+				<div class="recent-container">
+
+					<div class="recent-title">
+						<h4>Recent</h4>
+						<a href="#">View all</a>
+					</div>
+					<div class="file-container">
+						<div class="recent-card-container">
+							<div class="recent-card">
+								<p>Blabla</p>
+								<p class="description">Blabla</p>
+							</div>
+							<div class="file-info">
+								<p class="description">2d ago</p>
+								<p class="description">Download</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="btn-generate">
+				<form action="">
+					<button type="submit" id="btn-normal">Generate</button>
+				</form>
+			</div>
+		</div>
+	</main>
 {% endblock %}

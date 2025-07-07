@@ -1,0 +1,136 @@
+body {
+    height: 100vh;
+
+}
+
+main {
+
+    .dashboard-container {
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .top-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .title {
+                width: 50%;
+            }
+
+            .action-container {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                width: 50%;
+            }
+        }
+
+        .mid-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .nav-cards {
+                width: 24%;
+                height: 130px;
+                border: 1px solid #E2E8F0;
+                border-radius: 10px;
+
+                .infos-container {
+                    padding: 0 20px;
+                }
+
+                .data {
+                    color: black;
+                    font-size: 1.2em;
+                    font-weight: 700;
+                    margin: 0;
+                }
+            }
+        }
+
+        .bottom-container {
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+
+            .recent-container {
+                padding: 0 20px;
+
+                .recent-title {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    h4 {
+                        font-size: 1.5em;
+                        margin: 20px 0;
+                    }
+
+                    a {
+                        text-decoration: none;
+
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+
+                .file-container {
+                    background-color: #F8FAFC;
+                    border-radius: 10px;
+
+                    .recent-card-container {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 0 20px;
+                        margin-bottom: 20px;
+                    }
+                }
+            }
+        }
+
+        .btn-generate {
+            display: flex;
+            justify-content: end;
+
+            form {
+                box-shadow: none;
+                width: 10%;
+            }
+        }
+    }
+}
+
+
+
+
+@media screen and (max-width: 700px) {
+
+
+    .top-container {
+        .title {
+            display: none;
+        }
+
+        .action-container {
+            width: 100% !important;
+            padding: 20px 0;
+        }
+    }
+
+    .mid-container {
+        flex-direction: column;
+        gap: 20px;
+
+        .nav-cards {
+            width: 100% !important;
+            height: 100%;
+        }
+    }
+
+}

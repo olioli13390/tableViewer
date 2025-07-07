@@ -2,13 +2,22 @@ const { PrismaClient } = require("../../generated/prisma")
 const prisma = new PrismaClient({})
 const session = require("express-session")
 
-exports.getRegister = async (req, res) => { /// affiche register
-    res.render('pages/register.twig')
+exports.getRegister = async (req, res) => {/// affiche register
+    try {
+        res.render('pages/register.twig')
+    } catch (error) {
+        res.redirect('/login')
+    }
 }
 
 
 exports.getLogin = async (req, res) => { /// affiche login
-    res.render('pages/login.twig')
+    try {
+        res.render('pages/login.twig')
+    } catch (error) {
+        console.log(error);
+        res.redirect('/login')
+    }
 }
 
 exports.getDashboard = async (req, res) => { /// affiche le tableau de bord
@@ -22,6 +31,7 @@ exports.getDashboard = async (req, res) => { /// affiche le tableau de bord
         res.render("pages/dashboard.twig", { user: req.session.user })
     } catch (error) {
         console.log(error);
+        res.redirect('/login')
 
     }
 
