@@ -6,4 +6,6 @@ model CsvFile {
     sqlQuery      SqlQuery        @relation(fields: [sqlQuery_id], references: [id])
     sqlQuery_id   Int
     visualization Visualization[]
+    user          User            @relation(fields: [user_id], references: [id])
+    user_id       Int
 }

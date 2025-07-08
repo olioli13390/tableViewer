@@ -7,5 +7,6 @@ router.get('/register', mainController.getRegister)
 router.get('/login', mainController.getLogin)
 router.get('/', authguard, mainController.getDashboard)
 router.get('/addConnection', authguard, mainController.getAddConnection)
+router.get('/uploadCsv', authguard, mainController.getUploadCsv)
 
 module.exports = router

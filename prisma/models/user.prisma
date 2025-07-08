@@ -7,4 +7,5 @@ model User {
     created_at         DateTime             @default(now())
     dataBaseConnection DataBaseConnection[]
     wizard             Wizard[]
+    csvFile            CsvFile[]
 }
