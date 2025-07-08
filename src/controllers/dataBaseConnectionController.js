@@ -6,9 +6,8 @@ exports.postDb = async (req, res) => {
     const testMySQLConnection = async (host, port, name, username, password) => {
         let testPrisma = null
         try {
-            console.log(`Test de connexion MySQL vers ${host}:${port}/${name}`)
-
-            const databaseUrl = `mysql://${username}:${password}@${host}:${port}/${name}` // url tempo
+            console.log(`Testing connection to ${host}:${port}/${name}`)
+            const databaseUrl = `mysql://${encodeURIComponent(username)}:${encodeURIComponent(password)}@${host}:${port}/${name}`
 
             testPrisma = new PrismaClient({
                 datasources: {
@@ -17,29 +16,22 @@ exports.postDb = async (req, res) => {
                     }
                 }
             })
-
-            await testPrisma.$queryRaw`SELECT 1` /// select 1 retourne 1 si ca atteint la db
-
+            await testPrisma.$queryRaw`SELECT 1` // select 1 renvoi 1 si la base de donnée
             return {
                 success: true,
-                message: 'Connexion MySQL réussie'
+                message: 'Connected to MySQL'
             }
+
         } catch (error) {
-            console.log(error);
             return {
                 success: false,
-                message: `Erreur de connexion MySQL: ${error.message}`
-            }
-        } finally {
-            if (testPrisma) {
-                await testPrisma.$disconnect() ///
+                message: `Erreur de connexion MySQL : ${error.message}`
             }
         }
     }
 
     try {
         const { type, host, port, name, username, password } = req.body
-
         const connectionTest = await testMySQLConnection(host, port, name, username, password)
 
         if (!connectionTest.success) {
@@ -48,21 +40,28 @@ exports.postDb = async (req, res) => {
                 formData: req.body,
                 toast: {
                     type: "error",
-                    message: `Failed to reach db adress ${host}:${port}/${name}`
+                    message: "Connection to db failed"
                 }
             })
         }
-        const dataBaseConnection = await prisma.dataBaseConnection.create({
+        const dataBaseConnection = await prisma.dataBaseConnection.create({ // post les data
             data: {
-                type: req.body.type,
-                host: req.body.host,
-                port: parseInt(req.body.port),
-                name: req.body.name,
+                type: type,
+                host: host,
+                port: parseInt(port),
+                name: name,
                 user_id: req.session.user.id
             }
         })
-        // res.redirect("/")
+        return res.redirect("/")
     } catch (error) {
-        res.render("pages/addConnection.twig", { user: req.body })
+        return res.render("pages/addConnection.twig", {
+            user: req.session.user,
+            formData: req.body,
+            toast: {
+                type: "error",
+                message: "Data not saved in database"
+            }
+        })
     }
 }
