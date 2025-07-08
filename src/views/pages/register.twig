@@ -65,7 +65,7 @@
 				</div>
 				<div class="terms">
 					<label>
-						<input type="checkbox" name="terms">
+						<input type="checkbox" name="terms" required>
 						Terms and Privacy policy
 					</label>
 				</div>
@@ -78,4 +78,20 @@
 			</form>
 		</div>
 	</main>
+{% endblock %}
+
+{% block script %}
+	<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	{% if toast %}
+		<script>
+			Toastify({
+text: "{{ toast.message|e('js') }}",
+duration: 3000,
+gravity: "top",
+position: "center",
+backgroundColor: "{{ toast.type == 'error' ? '#ff4d4d' : '#4BB543' }}",
+stopOnFocus: true
+}).showToast();
+		</script>
+	{% endif %}
 {% endblock %}

@@ -4,37 +4,40 @@ const prisma = new PrismaClient({}).$extends(hashPasswordExtension)
 const bcrypt = require("bcrypt")
 const session = require('express-session')
 
-
 exports.postUser = async (req, res) => { /// créer un user
     try {
         const { company_name, siret, mail, password } = req.body
         if (!req.body.company_name.match(/^.+$/)) {
             return res.render('pages/register.twig', {
-                error: {
-                    company_name: "Invalid company name "
+                toast: {
+                    type: "error",
+                    message: "Invalid company name "
                 }, user: { ...req.body }
             })
         }
 
         if (!req.body.siret.match(/^\d{14}$/)) {
             return res.render('pages/register.twig', {
-                error: {
-                    siret: "Siret must contain 14 numbers"
+                toast: {
+                    type: "error",
+                    message: "Siret must contain 14 numbers"
                 }, user: { ...req.body }
             })
         }
         if (!req.body.mail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
             return res.render("pages/register.twig", {
-                error: {
-                    mail: "Invalid Email"
+                toast: {
+                    type: "error",
+                    message: "Invalid Email"
                 }, user: { ...req.body }
             })
         }
 
         if (!req.body.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
             return res.render('pages/register.twig', {
-                error: {
-                    password: "Password invalid"
+                toast: {
+                    type: "error",
+                    message: "Password invalid"
                 }, user: { ...req.body }
             })
         }
@@ -47,8 +50,9 @@ exports.postUser = async (req, res) => { /// créer un user
 
         if (existingSiret) {
             return res.render("pages/register.twig", {
-                error: {
-                    siret: "Siret already in use"
+                toast: {
+                    type: "error",
+                    message: "Siret already in use"
                 },
                 user: { ...req.body }
             })
@@ -62,14 +66,13 @@ exports.postUser = async (req, res) => { /// créer un user
 
         if (existingUser) {
             return res.render('pages/register.twig', {
-                error: {
-                    mail: "Email is already in use"
+                toast: {
+                    type: "error",
+                    message: "Email is already in use"
                 },
                 user: { ...req.body }
             })
         }
-
-
 
         if (req.body.password == req.body.confirmPassword) {
             const user = await prisma.user.create({
@@ -80,7 +83,12 @@ exports.postUser = async (req, res) => { /// créer un user
                     password: req.body.password,
                 }
             })
-            res.redirect("/login")
+            res.render("pages/login.twig", {
+                toast: {
+                    type: "succes",
+                    message: "Account created"
+                }
+            })
         } else {
             return res.render('pages/register.twig', { error: { confirmPassword: "Password doesn't match" }, user: { ...req.body } })
         }
@@ -102,19 +110,21 @@ exports.postLogin = async (req, res) => { /// permet la connexion
             if (await bcrypt.compare(req.body.password, user.password)) {
                 req.session.user = user
                 return res.redirect("/")
-                
+
             }
             else {
                 return res.render('pages/login.twig', {
-                    error: {
-                        password: "Invalid password"
+                    toast: {
+                        type: "error",
+                        message: "Invalid password"
                     }
                 })
             }
         } else {
             return res.render('pages/login.twig', {
-                error: {
-                    siret: "Invalid Siret"
+                toast: {
+                    type: "error",
+                    message: "Invalid Siret"
                 }
             })
         }
@@ -123,7 +133,7 @@ exports.postLogin = async (req, res) => { /// permet la connexion
     }
 }
 
-exports.getDisconnected = async (req, res) => {
+exports.getDisconnected = async (req, res) => { /// permet la déco
     try {
         if (req.session.user) {
             req.session.destroy()
@@ -131,6 +141,6 @@ exports.getDisconnected = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        res.render("/")
+        res.redirect("/")
     }
 }

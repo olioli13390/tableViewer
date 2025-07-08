@@ -3,11 +3,11 @@
 {% block style %}
 	<link rel="stylesheet" href="/assets/css/settings.css">
 	<link rel="stylesheet" href="/assets/css/login.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-notify/dist/simple-notify.css"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 {% endblock %}
 
 {% block title %}
-	<title>Register</title>
+	<title>Log In</title>
 {% endblock %}
 
 {% block main %}
@@ -19,20 +19,10 @@
 					<p>Log in to your account</p>
 				</div>
 				<div class="fields">
-					{% if error.siret %}
-						<p class="error">
-							{{error.siret}}
-						</p>
-					{% endif %}
 					<label for="mail">Enter your siret</label>
 					<input type="text" name="siret">
 				</div>
 				<div class="fields">
-					{% if error.password %}
-						<p class="error">
-							{{error.password}}
-						</p>
-					{% endif %}
 					<label for="password">Enter your password</label>
 					<input type="text" name="password">
 				</div>
@@ -53,5 +43,17 @@
 {% endblock %}
 
 {% block script %}
-	<script src="https://cdn.jsdelivr.net/npm/simple-notify/dist/simple-notify.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	{% if toast %}
+		<script>
+			Toastify({
+text: "{{ toast.message|e('js') }}",
+duration: 3000,
+gravity: "top",
+position: "center",
+backgroundColor: "{{ toast.type == 'error' ? '#ff4d4d' : '#4BB543' }}",
+stopOnFocus: true
+}).showToast();
+		</script>
+	{% endif %}
 {% endblock %}

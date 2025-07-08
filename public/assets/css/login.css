@@ -2,6 +2,24 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+
+    #toast {
+        border: 1px solid #D7155C;
+        border-radius: 10px;
+        position: absolute;
+        top: 35%;
+        left: 10%;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        .toast-container {
+            padding: 0 20px;
+            text-align: center;
+        }
+    }
 
     .form-container {
         width: 40%;

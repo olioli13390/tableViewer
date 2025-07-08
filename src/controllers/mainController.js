@@ -44,3 +44,13 @@ exports.getAddConnection = async (req, res) => { /// affiche formulaire connexio
     }
 
 }
+
+exports.getUploadCsv = async (req, res) => { /// affiche formulaire déposer un fichier csv
+    try {
+        res.render("pages/uploadCsv.twig", { user: req.session.user })
+    } catch (error) {
+        console.log(error);
+        res.redirect("/login")
+    }
+
+}
