@@ -3,46 +3,56 @@
 {% block style %}
 	<link rel="stylesheet" href="/assets/css/addConnection.css">
 	<link rel="stylesheet" href="/assets/css/settings.css">
+	<style>
+		.hidden {
+			display: none;
+		}
+	</style>
 {% endblock %}
 
 {% block main %}
 	<main>
 		<div class="form-container">
-			<form action="" method="POST">
+			<form method="POST" id="dbForm">
 				<div class="title">
-					<h4>DB connection</h4>
-					<p>Choose a db to connect</p>
+					<h4>DB Connection</h4>
+					<p>Choose a database to connect</p>
 				</div>
 				<div class="fields">
 					<label for="type">Database Type</label>
 					<select name="type" required>
 						<option value="">Select database type</option>
-						<option value="mysql">MySQL</option>
+						<option value="mysql" {% if formData.type == 'mysql' %}selected{% endif %}>MySQL</option>
 					</select>
 				</div>
 				<div class="fields">
 					<label for="host">Host</label>
-					<input type="text" name="host" required>
+					<input type="text" name="host" value="{{ formData.host | default('') }}" required>
 				</div>
 				<div class="fields">
 					<label for="port">Port</label>
-					<input type="text" name="port" required>
+					<input type="text" name="port" value="{{ formData.port | default('') }}" required>
 				</div>
 				<div class="fields">
 					<label for="name">Database name</label>
-					<input type="text" name="name" required>
+					<input type="text" name="name" value="{{ formData.name | default('') }}" required>
 				</div>
 				<div class="fields">
 					<label for="username">Username</label>
-					<input type="text" name="username" required>
+					<input type="text" name="username" value="{{ formData.username | default('') }}" required>
 				</div>
 				<div class="fields">
 					<label for="password">Password</label>
-					<input type="text" name="password" required>
+					<input type="password" name="password" value="{{ formData.password | default('') }}" required>
 				</div>
 				<div class="cancel-validate">
 					<a href="/">Cancel</a>
-					<button type="submit" class="btn-normal">Connect</button>
+
+					<!-- Bouton Test -->
+					<button type="button" id="testBtn" class="btn-normal">Test Connection</button>
+
+					<!-- Bouton Connect caché au départ -->
+					<button type="submit" id="connectBtn" class="btn-normal hidden" formaction="/addConnection">Connect</button>
 				</div>
 			</form>
 		</div>
@@ -52,6 +62,9 @@
 {% block script %}
 	<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 	<script src="/js/toastify.js"></script>
+	<script src="/js/testConnectionBtn.js"></script>
+	<script src="/js/testMySqlConnection.js"></script>
+
 	{% if toast %}
 		<script>
 			showToast("{{ toast.message|e('js') }}", "{{ toast.type }}");
