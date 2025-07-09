@@ -1,0 +1,60 @@
+{% extends "../layout/base.twig" %}
+
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/settings.css">
+	<link rel="stylesheet" href="/assets/css/generate.css">
+{% endblock %}
+
+{% block main %}
+	<main>
+		<section class="nav">
+			<div class="back">
+				<a href="/">Back to Dashboard</a>
+			</div>
+			<div class="page">
+				<div class="step">
+					<div class="step-number">1</div>
+					<p class="step-label">Select Tables</p>
+				</div>
+				<div class="connector"></div>
+				<div class="step">
+					<div class="step-number">2</div>
+					<p class="step-label">Format</p>
+				</div>
+				<div class="connector"></div>
+				<div class="step">
+					<div class="step-number">3</div>
+					<p class="step-label">Parameters</p>
+				</div>
+			</div>
+		</section>
+		<section class="table-setup">
+			<div class="table-available">
+				<div class="table-available-container">
+					<h2>Avalaible Tables</h2>
+					<div class="table-list-container">
+						{% if connectedDb %}
+							<div class="tables">
+								<div class="tables-infos">
+									<i class="fa-solid fa-table"></i>
+									<div class="tables-title">
+										<h3>Title</h3>
+										<p class="description">description</p>
+									</div>
+								</div>
+								<div class="tables-btn-add">
+									<i class="fa-regular fa-square-plus"></i>
+								</div>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div class="table-selected">
+				<div class="table-selected-container">
+					<h2>Selected tables</h2>
+				</div>
+			</div>
+		</section>
+	</main>
+{% endblock %}

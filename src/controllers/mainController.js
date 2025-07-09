@@ -54,3 +54,17 @@ exports.getUploadCsv = async (req, res) => { /// affiche formulaire déposer un 
     }
 
 }
+
+exports.getGenerate = async (req, res) => {
+    try {
+        const connectedDb = req.session.connectedDb;
+        res.render("pages/generate.twig", {
+            user: req.session.user,
+            connectedDbName: connectedDb?.name || null
+        })
+        console.log(connectedDb);
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
