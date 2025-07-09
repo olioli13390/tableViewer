@@ -14,7 +14,7 @@ Cette application utilise **Express**, **Prisma**, **Twig**, et plusieurs autres
 
 ```bash
 git clone https://github.com/olioli13390/tableViewer.git
-cd ton-repo
+cd tableViewer
 
 ### 2. Installer les dépendances : 
 
