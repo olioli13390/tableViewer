@@ -31,6 +31,7 @@ npx prisma init
 
 ### 5. Appliquer les migrations
 
+npx prisma generate
 npx prisma migrate dev --name init
 
 ### 6. Lancer "nodemon" en commande
