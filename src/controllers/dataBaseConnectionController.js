@@ -1,6 +1,7 @@
 const { PrismaClient } = require("../../generated/prisma")
 const prisma = new PrismaClient({})
-const auth = require("../services/auth")
+const flash = require("connect-flash")
+const session = require("express-session")
 
 exports.postDb = async (req, res) => {
     const testMySQLConnection = async (host, port, name, username, password) => {
@@ -20,12 +21,18 @@ exports.postDb = async (req, res) => {
             return {
                 success: true,
                 message: 'Connected to MySQL'
+
             }
 
         } catch (error) {
             return {
                 success: false,
-                message: `Erreur de connexion MySQL : ${error.message}`
+                message: "Failed to connect MySQL"
+            }
+        }
+        finally {
+            if (testPrisma) {
+                await testPrisma.$disconnect()
             }
         }
     }
@@ -53,8 +60,11 @@ exports.postDb = async (req, res) => {
                 user_id: req.session.user.id
             }
         })
+        req.flash('toast', { type: 'success', message: 'Connection test to MySQL successfully done !' })
         return res.redirect("/")
     } catch (error) {
+        console.log(error);
+
         return res.render("pages/addConnection.twig", {
             user: req.session.user,
             formData: req.body,

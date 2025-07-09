@@ -53,6 +53,10 @@ main {
                     color: #D7155C;
                 }
             }
+
+            button {
+                margin-top: 40px;
+            }
         }
 
 

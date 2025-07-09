@@ -7,6 +7,7 @@ Cette application utilise **Express**, **Prisma**, **Twig**, et plusieurs autres
 - Node.js 
 - npm 
 - Une base de données MySQL disponible localement
+- Nodemon (npm i nodemon -g)
 
 ## Installation
 
@@ -22,16 +23,12 @@ npm i
 
 ### 3. Créer un .env à la racine et renseigner les variables suivantes
 
-DATABASE_URL= exemple : "mysql://user:password@host:port/schema"
-PORT= Choisir un port
+DATABASE_URL= "mysql://user:password@host:port/schema"
+PORT= #3000
 
-### 4. Initialiser prisma
-
-npx prisma init
-
-### 5. Appliquer les migrations
+### 4. Appliquer les migrations
 
 npx prisma generate
 npx prisma migrate dev --name init
 
-### 6. Lancer "nodemon" en commande
+### 5. Lancer "nodemon" en commande

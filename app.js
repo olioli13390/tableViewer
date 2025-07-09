@@ -1,8 +1,9 @@
 const express = require('express')
 const session = require("express-session")
+const flash = require("connect-flash")
 const userRoutes = require('./src/routes/userRoutes')
 const mainRoutes = require('./src/routes/mainRoutes')
-const dataBaseConnectionRoutes = require("./src/routes/dataBaseConnection")
+const dataBaseConnectionRoutes = require("./src/routes/dataBaseConnectionRoutes")
 
 const app = express()
 
@@ -16,6 +17,11 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
 }))
+app.use(flash())
+app.use((req, res, next) => {
+    res.locals.toast = req.flash("toast")[0]
+    next()
+})
 app.use(userRoutes)
 app.use(mainRoutes)
 app.use(dataBaseConnectionRoutes)

@@ -88,3 +88,13 @@
 		</div>
 	</main>
 {% endblock %}
+
+{% block script %}
+	<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	<script src="/js/toastify.js"></script>
+	{% if toast %}
+		<script>
+			showToast("{{ toast.message|e('js') }}", "{{ toast.type }}");
+		</script>
+	{% endif %}
+{% endblock %}
