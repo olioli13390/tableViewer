@@ -8,3 +8,4 @@ function showToast(message, type) {
         stopOnFocus: true
     }).showToast();
 }
+

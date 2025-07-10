@@ -1,35 +1,37 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const availableTables = document.querySelectorAll(".table-list-container .tables")
-    const selectedContainer = document.querySelector(".table-selected-container")
+			const availableTables = document.querySelectorAll(".table-list-container .tables")
+			const selectedContainer = document.getElementById("selected-container")
+			const hiddenInput = document.getElementById("selectedTablesInput")
 
-    availableTables.forEach((tableEl) => {
-        tableEl.addEventListener("click", () => {
+			const selectedTableNames = new Set()
 
-            const tableName = tableEl.querySelector("h3").innerText
-            const alreadySelected = [...selectedContainer.querySelectorAll("h3")].some(
-                (h3) => h3.innerText === tableName
-            )
-            if (alreadySelected) return
+			function updateHiddenInput() {
+				hiddenInput.value = JSON.stringify(Array.from(selectedTableNames))
+			}
 
-            tableEl.classList.add("clicked")
+			availableTables.forEach((tableEl) => {
+				tableEl.addEventListener("click", () => {
+					const tableName = tableEl.dataset.table
+					if (selectedTableNames.has(tableName)) return
 
-            const cloned = tableEl.cloneNode(true)
+					const cloned = tableEl.cloneNode(true)
+					cloned.classList.add("selected")
 
-            const icon = cloned.querySelector(".fa-square-plus")
-            if (icon) {
-                icon.classList.remove("fa-square-plus")
-                icon.classList.add("fa-square-minus")
-            }
+					const icon = cloned.querySelector("i.fa-square-plus")
+					if (icon) {
+						icon.classList.remove("fa-square-plus")
+						icon.classList.add("fa-square-minus")
+					}
 
-            cloned.addEventListener("click", () => {
-                cloned.remove()
-                tableEl.classList.remove("clicked")
-            })
+					cloned.addEventListener("click", () => {
+						selectedContainer.removeChild(cloned)
+						selectedTableNames.delete(tableName)
+						updateHiddenInput()
+					})
 
-            selectedContainer.appendChild(cloned);
-        })
-    })
-})
-
-
-
+					selectedContainer.appendChild(cloned)
+					selectedTableNames.add(tableName)
+					updateHiddenInput()
+				})
+			})
+		})

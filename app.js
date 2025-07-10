@@ -4,6 +4,7 @@ const flash = require("connect-flash")
 const userRoutes = require('./src/routes/userRoutes')
 const mainRoutes = require('./src/routes/mainRoutes')
 const dataBaseConnectionRoutes = require("./src/routes/dataBaseConnectionRoutes")
+const sqlQueryRoutes = require("./src/routes/sqlQueryRoutes")
 
 const app = express()
 
@@ -17,6 +18,10 @@ app.use(session({
     secret: "olivier",
     resave: true,
     saveUninitialized: true,
+    cookie: {
+    secure: false,
+    maxAge: 1000 * 60 * 60
+  }
 }))
 app.use(flash())
 app.use((req, res, next) => {
@@ -26,6 +31,7 @@ app.use((req, res, next) => {
 app.use(userRoutes)
 app.use(mainRoutes)
 app.use(dataBaseConnectionRoutes)
+app.use(sqlQueryRoutes)
 
 app.listen(process.env.PORT, (err) => {
     if (err) {

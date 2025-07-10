@@ -34,12 +34,12 @@
 					<h2>Avalaible Tables</h2>
 					<div class="table-list-container">
 						{% for table in tables %}
-							<div class="tables">
+							<div class="tables" data-table="{{ table }}">
 								<div class="tables-infos">
 									<i class="fa-solid fa-table"></i>
 									<div class="tables-title">
-										<h3>{{table}}</h3>
-										<p class="description">{{connectedDb.name}}</p>
+										<h3>{{ table }}</h3>
+										<p class="description">{{ connectedDb.name }}</p>
 									</div>
 								</div>
 								<div class="tables-btn-add">
@@ -51,7 +51,7 @@
 				</div>
 			</div>
 
-			<form action="/submit-selected-tables" method="POST">
+			<form action="/generate/submit" method="POST">
 				<section class="table-selected">
 					<div class="table-selected-container" id="selected-container">
 						<h2>Selected tables</h2>
@@ -69,18 +69,11 @@
 		</section>
 	</main>
 
-	{# <div class="btn-container">
-					<div class="btn">
-						<a href="/" class="btn-cancel">Cancel</a>
-						<form action="">
-							<button class="btn-normal" type="submit">Next
-								<i class="fa-solid fa-arrow-right"></i>
-							</button>
-						</form>
-					</div>
-				</div> #}
 {% endblock %}
 
 {% block script %}
 	<script src="/js/selectTable.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	<script src="/js/toastify.js"></script>
+
 {% endblock %}

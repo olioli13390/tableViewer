@@ -37,28 +37,30 @@ exports.postDb = async (req, res) => { ///
         })
 
         req.session.connectedDb = {
+            id: connectionTest.id,
             name,
             host,
-            port,
+            port: parseInt(port),
             username,
             password
         }
+
         req.session.save(err => {
             if (err) {
-                console.error("Erreur en sauvegardant la session :", err)
+                console.error("Save error db", err)
                 req.flash("toast", {
                     type: "error",
                     message: "Error saving session"
-                });
+                })
                 return res.redirect("/addConnection")
             }
-        })
 
-        req.flash("toast", {
-            type: "success",
-            message: "Database connection saved!"
-        });
-        res.redirect("/")
+            req.flash("toast", {
+                type: "success",
+                message: "Database connection saved!"
+            })
+            res.redirect("/")
+        })
     } catch (error) {
         console.error(error)
         req.flash("toast", {
