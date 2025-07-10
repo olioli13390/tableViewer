@@ -50,29 +50,35 @@
 					</div>
 				</div>
 			</div>
-			<div class="table-selected">
-				<div class="table-selected-container">
-					<h2>Selected tables</h2>
-				</div>
-				<div class="form-container">
-					<form action="">
-						<label for=""></label>
-					</form>
-				</div>
-			</div>
+
+			<form action="/submit-selected-tables" method="POST">
+				<section class="table-selected">
+					<div class="table-selected-container" id="selected-container">
+						<h2>Selected tables</h2>
+
+					</div>
+
+
+					<input type="hidden" name="selectedTables" id="selectedTablesInput">
+					<div class="btn-container">
+						<button type="submit" class="submit-btn btn-normal">Submit Selection</button>
+					</div>
+				</section>
+			</form>
+
 		</section>
 	</main>
 
-	<div class="btn-container">
-		<div class="btn">
-			<a href="/" class="btn-cancel">Cancel</a>
-			<form action="">
-				<button class="btn-normal" type="submit">Next
-					<i class="fa-solid fa-arrow-right"></i>
-				</button>
-			</form>
-		</div>
-	</div>
+	{# <div class="btn-container">
+					<div class="btn">
+						<a href="/" class="btn-cancel">Cancel</a>
+						<form action="">
+							<button class="btn-normal" type="submit">Next
+								<i class="fa-solid fa-arrow-right"></i>
+							</button>
+						</form>
+					</div>
+				</div> #}
 {% endblock %}
 
 {% block script %}

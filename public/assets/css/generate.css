@@ -73,6 +73,13 @@ main {
     justify-content: space-between;
     margin: 20px 20px;
 
+    form {
+        box-shadow: none;
+        border-radius: 10px;
+        padding: 0;
+        width: 67%;
+    }
+
     h2 {
         margin-top: 0;
     }
@@ -142,7 +149,6 @@ main {
     .table-selected {
         border: 1px solid #E2E8F0;
         border-radius: 7px;
-        width: 67%;
 
         .table-selected-container {
             padding: 20px;
@@ -185,9 +191,22 @@ main {
                 }
             }
         }
+
+        .btn-container {
+            display: flex;
+            justify-content: end;
+            padding: 20px;
+
+            .btn-normal {
+                width: 33%;
+            }
+        }
+
+
     }
 }
 
+/* 
 .btn-container {
     padding: 20px;
     display: flex;
@@ -201,13 +220,6 @@ main {
         text-align: center;
     }
 
-    form {
-        box-shadow: none;
-        border-radius: 10px;
-        padding: 0;
-        width: 100%;
-    }
-
     button {
         display: flex;
         align-items: center;
@@ -218,4 +230,4 @@ main {
     i {
         font-size: 0.7em;
     }
-}
+} */
