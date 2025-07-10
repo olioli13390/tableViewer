@@ -58,14 +58,39 @@ exports.getUploadCsv = async (req, res) => { /// affiche formulaire déposer un 
 
 exports.getGenerate = async (req, res) => {
     try {
-        const connectedDb = req.session.connectedDb;
+        const connectedDb = req.session.connectedDb
+        if (!connectedDb) {
+            req.flash("toast", {
+                type: "error",
+                message: "No database connected."
+            })
+            return res.redirect("/")
+        }
+
+        const { host, port, name, username, password } = connectedDb
+        const databaseUrl = `mysql://${encodeURIComponent(username)}:${encodeURIComponent(password)}@${host}:${port}/${name}`
+
+        const dynamicPrisma = new PrismaClient({
+            datasources: {
+                db: { url: databaseUrl }
+            }
+        })
+
+        let tables = [];
+
+        try {
+            tables = await dynamicPrisma.$queryRaw`
+				SELECT table_name FROM information_schema.tables WHERE table_schema = ${name}
+			`
+        } finally {
+            await dynamicPrisma.$disconnect();
+        }
         res.render("pages/generate.twig", {
             user: req.session.user,
-            connectedDbName: connectedDb?.name || null
+            connectedDb: connectedDb,
+            tables: tables.map(row => row.table_name)
         })
-        console.log(connectedDb);
-
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 }

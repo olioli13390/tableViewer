@@ -33,20 +33,20 @@
 				<div class="table-available-container">
 					<h2>Avalaible Tables</h2>
 					<div class="table-list-container">
-						{% if connectedDb %}
+						{% for table in tables %}
 							<div class="tables">
 								<div class="tables-infos">
 									<i class="fa-solid fa-table"></i>
 									<div class="tables-title">
-										<h3>Title</h3>
-										<p class="description">description</p>
+										<h3>{{table}}</h3>
+										<p class="description">{{connectedDb.name}}</p>
 									</div>
 								</div>
 								<div class="tables-btn-add">
 									<i class="fa-regular fa-square-plus"></i>
 								</div>
 							</div>
-						{% endif %}
+						{% endfor %}
 					</div>
 				</div>
 			</div>
