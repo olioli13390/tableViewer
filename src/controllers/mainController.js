@@ -28,7 +28,8 @@ exports.getDashboard = async (req, res) => { /// affiche le tableau de bord
                 id: req.session.user.id
             }
         })
-        res.render("pages/dashboard.twig", { user: req.session.user })
+        const connectedDb = req.session.connectedDb || null
+        res.render("pages/dashboard.twig", { user: req.session.user, connectedDb: connectedDb })
     } catch (error) {
         console.log(error);
         res.redirect('/login')
@@ -63,7 +64,7 @@ exports.getGenerate = async (req, res) => {
             connectedDbName: connectedDb?.name || null
         })
         console.log(connectedDb);
-        
+
     } catch (error) {
         console.log(error);
     }

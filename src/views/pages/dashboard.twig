@@ -38,9 +38,15 @@
 				</div>
 				<div class="nav-cards">
 					<div class="infos-container">
-						<h4 class="description">Connect to</h4>
-						<p class="data">Db name</p>
-						<p class="description">Bla bla</p>
+						{% if connectedDb %}
+							<h4 class="description">Connect to</h4>
+							<p class="data">{{connectedDb.name}}</p>
+							<p class="description">Port :
+								{{connectedDb.port}}
+							</p>
+						{% else %}
+							<h4>No db connectedDb</h4>
+						{% endif %}
 					</div>
 				</div>
 				<div class="nav-cards">
