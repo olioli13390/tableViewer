@@ -1,6 +1,6 @@
 const { PrismaClient } = require("../../generated/prisma")
 const prisma = new PrismaClient({})
-const { testMySQLConnection } = require("../services/extensions/testMySqlConnection")
+const { testMySQLConnection } = require("../services/testMySqlConnection")
 
 exports.testDb = async (req, res) => { /// affiche le message en cas de réussite de co
     const { host, port, name, username, password } = req.body

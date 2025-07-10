@@ -1,5 +1,5 @@
 
-const { PrismaClient } = require("../../../generated/prisma")
+const { PrismaClient } = require("../../generated/prisma")
 
 async function testMySQLConnection(host, port, name, username, password) {
 	let testPrisma = null;
