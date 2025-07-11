@@ -1,0 +1,6 @@
+"id","nom","prenom","email","date_naissance","ville"
+1,"Dupont","Jean","jean.dupont@example.com","1990-05-14T22:00:00.000Z","Paris"
+2,"Martin","Marie","marie.martin@example.com","1985-08-21T22:00:00.000Z","Lyon"
+3,"Bernard","Luc","luc.bernard@example.com","1992-11-29T23:00:00.000Z","Marseille"
+4,"Durand","Sophie","sophie.durand@example.com","1988-03-09T23:00:00.000Z","Toulouse"
+5,"Moreau","Pierre","pierre.moreau@example.com","1995-07-04T22:00:00.000Z","Nice"

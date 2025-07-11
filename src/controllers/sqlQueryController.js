@@ -11,12 +11,11 @@ exports.postGenerateCsv = async (req, res) => {
     try {
         const userId = req.session.user?.id
         const connectedDb = req.session.connectedDb
-        let selectedTable = req.body.selectedTables
+        let selectedTables = req.body.selectedTables
 
-
-        if (typeof selectedTable === 'string') { /// typeof sur vérifie le type de la variable ici string
+        if (typeof selectedTables === 'string') {
             try {
-                selectedTable = JSON.parse(selectedTable) /// parse le json
+                selectedTables = JSON.parse(selectedTables)
             } catch (error) {
                 return res.render('pages/generate.twig', {
                     toast: {
@@ -27,11 +26,11 @@ exports.postGenerateCsv = async (req, res) => {
             }
         }
 
-        if (Array.isArray(selectedTable)) { /// sélectionne seulement le premier fichier  - temporaire
-            selectedTable = selectedTable[0]
+        if (!Array.isArray(selectedTables)) {
+            selectedTables = [selectedTables]
         }
 
-        if (!selectedTable) {
+        if (!selectedTables || selectedTables.length === 0) {
             return res.render('pages/generate.twig', {
                 toast: {
                     type: "error",
@@ -48,76 +47,56 @@ exports.postGenerateCsv = async (req, res) => {
             database: connectedDb.name
         })
 
-        const queryText = `SELECT * FROM \`${selectedTable}\``
-        const [rows] = await connection.execute(queryText)
+        const tablesData = {}
+        const tablesColumns = {}
 
-        if (!rows || rows.length === 0) {
-            return res.render('pages/generate.twig', {
-                toast: {
-                    type: "error",
-                    message: `No data found in the table: ${selectedTable}`
-                }
-            })
-        }
+        for (const selectedTable of selectedTables) {
+            const queryText = `SELECT * FROM \`${selectedTable}\``
+            const [rows] = await connection.execute(queryText)
 
-        const csv = parse(rows)
-        const timestamp = Date.now()
-        const fileName = `${selectedTable}_${timestamp}.csv`
-        const exportDir = path.join(__dirname, '../../uploads')
-        const filePath = path.join(exportDir, fileName)
-
-        if (!fs.existsSync(exportDir)) {
-            fs.mkdirSync(exportDir, { recursive: true })
-        }
-
-        fs.writeFileSync(filePath, csv)
-
-        let dbConnection
-        if (connectedDb.id) {
-            dbConnection = { id: connectedDb.id }
-        } else {
-            dbConnection = await prisma.dataBaseConnection.findFirst({
-                where: {
-                    host: connectedDb.host,
-                    port: parseInt(connectedDb.port),
-                    name: connectedDb.name,
-                    user_id: userId
-                }
-            })
-        }
-
-        const sqlQuery = await prisma.sqlQuery.create({
-            data: {
-                name: `Query on ${selectedTable}`,
-                sql_text: `SELECT * FROM \`${selectedTable}\``,
-                created_at: new Date(),
-                id_dataBaseConnection: dbConnection.id,
+            if (!rows || rows.length === 0) {
+                return res.render('pages/generate.twig', {
+                    toast: {
+                        type: "error",
+                        message: `No data found in the table: ${selectedTable}`
+                    }
+                })
             }
-        })
 
-        await prisma.csvFile.create({
-            data: {
-                name_csv: fileName,
-                path: `/exports/${fileName}`,
-                created_at: new Date(),
-                sqlQuery_id: sqlQuery.id,
-                user_id: userId,
+            tablesData[selectedTable] = rows
+            tablesColumns[selectedTable] = Object.keys(rows[0])
+        }
+
+
+        const commonColumns = {}
+
+        for (let i = 0; i < selectedTables.length; i++) {
+            for (let j = i + 1; j < selectedTables.length; j++) {
+                const table1 = selectedTables[i]
+                const table2 = selectedTables[j]
+
+
+                const commonCols = tablesColumns[table1].filter(column =>
+                    tablesColumns[table2].includes(column)
+                )
+                commonColumns[`${table1}_${table2}`] = commonCols
             }
-        })
-        console.log(req.session.user);
-        console.log(req.session.connectedDb);
-        return res.render("pages/dashboard.twig", {
-            toast: {
-                type: "success",
-                message: `CSV generated successfully from ${selectedTable}. File saved as: ${fileName}`
-            }, connectedDbs: [req.session.connectedDb], user: req.session.user
+        }
+
+        return res.render("pages/join.twig", {
+            tablesData: tablesData,
+            commonColumns: commonColumns,
+            selectedTables: selectedTables,
+            connectedDbs: [req.session.connectedDb],
+            user: req.session.user
         })
 
     } catch (error) {
+        console.error(error)
         return res.render("pages/generate.twig", {
-            twig: {
+            toast: {
                 type: "error",
-                message: "Cannot generate"
+                message: "Cannot retrieve data from tables"
             }
         })
     } finally {
@@ -135,3 +114,4 @@ exports.postGenerateCsv = async (req, res) => {
         }
     }
 }
+
