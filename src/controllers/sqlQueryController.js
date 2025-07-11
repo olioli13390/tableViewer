@@ -82,14 +82,15 @@ exports.postGenerateCsv = async (req, res) => {
                 commonColumns[`${table1}_${table2}`] = commonCols
             }
         }
-
         return res.render("pages/join.twig", {
             tablesData: tablesData,
-            commonColumns: commonColumns,
+            commonColumns : commonColumns,
+            tablesColumns: tablesColumns,
             selectedTables: selectedTables,
             connectedDbs: [req.session.connectedDb],
             user: req.session.user
         })
+
 
     } catch (error) {
         console.error(error)
