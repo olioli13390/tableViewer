@@ -4,8 +4,12 @@ const dataBaseConnectionController = require("../controllers/dataBaseConnectionC
 const authguard = require("../services/auth.js")
 
 router.post("/testDb", dataBaseConnectionController.testDb)
+
 router.post("/addConnection", authguard, dataBaseConnectionController.postDb)
 
+router.post("/selectConnection", authguard, dataBaseConnectionController.selectConnection)
+
+router.post("/connectExistingDb", authguard, dataBaseConnectionController.connectExistingDb)
 
 
 module.exports = router

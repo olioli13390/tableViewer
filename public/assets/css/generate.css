@@ -92,17 +92,19 @@ main {
         .table-available-container {
             padding: 20px;
 
+            .clicked {
+                background-color: #F8FAFC;
+                border: 1px solid #D7155C;
+            }
+
+            .clicked i {
+                color: #D7155C;
+                transition: 0.3s;
+            }
+
             .table-list-container {
 
-                .tables.clicked {
-                    background-color: #F8FAFC;
-                    border: 1px solid #D7155C;
-                }
 
-                .tables.clicked i {
-                    color: #D7155C;
-                    transition: 0.3s;
-                }
 
                 .tables {
                     border-radius: 7px;
@@ -206,28 +208,47 @@ main {
     }
 }
 
-/* 
-.btn-container {
-    padding: 20px;
-    display: flex;
-    justify-content: end;
-    align-items: center;
+@media screen and (max-width: 700px) {
 
-    .btn {
-        width: 40%;
-        display: flex;
-        gap: 10px;
-        text-align: center;
+    .tables-infos {
+        padding: 0 !important;
+        gap: 30px !important;
+        margin-left: 10px !important;
     }
 
-    button {
-        display: flex;
-        align-items: center;
+    .tables-btn-add {
+        margin-right: 10px !important;
+    }
+
+    .table-setup {
+        flex-direction: column;
+        padding: 10px;
+        padding: 0;
+
+        .table-available {
+            width: 100% !important;
+            margin-bottom: 10px;
+        }
+
+        form {
+            width: 100% !important;
+        }
+    }
+
+    .submit-btn {
+        width: 100% !important;
+    }
+
+    .nav {
         justify-content: center;
-        gap: 10px;
+
+        .back {
+            margin-left: 0 !important;
+        }
+
+        .page {
+            display: none !important;
+        }
     }
 
-    i {
-        font-size: 0.7em;
-    }
-} */
+}

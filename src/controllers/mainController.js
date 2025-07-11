@@ -28,32 +28,33 @@ exports.getDashboard = async (req, res) => { /// affiche le tableau de bord
                 id: req.session.user.id
             }
         })
-        const connectedDb = req.session.connectedDb || null
-        res.render("pages/dashboard.twig", { user: req.session.user, connectedDb: connectedDb })
+        const connectedDbs = await prisma.dataBaseConnection.findMany({
+            where: {
+                user_id: req.session.user.id
+            }
+        })
+        const selectedDb = req.session.connectedDb
+        res.render("pages/dashboard.twig", { user: req.session.user, connectedDbs: connectedDbs, selectedDb })
     } catch (error) {
         console.log(error);
         res.redirect('/login')
     }
 }
 
-exports.getAddConnection = async (req, res) => { /// affiche formulaire connexion à une db
-    try {
-        res.render("pages/addConnection.twig", { user: req.session.user })
-    } catch (error) {
-        console.log(error);
-        res.redirect("/login")
-    }
+exports.getAddConnection = async (req, res) => {
+    const { type, host, port, name, mode } = req.query
 
-}
-
-exports.getUploadCsv = async (req, res) => { /// affiche formulaire déposer un fichier csv
-    try {
-        res.render("pages/uploadCsv.twig", { user: req.session.user })
-    } catch (error) {
-        console.log(error);
-        res.redirect("/login")
-    }
-
+    res.render("pages/addConnection.twig", {
+        formData: {
+            type: type || '',
+            host: host || '',
+            port: port || '',
+            name: name || '',
+            username: '',
+            password: ''
+        },
+        mode: mode || 'create'
+    })
 }
 
 exports.getGenerate = async (req, res) => {

@@ -4,119 +4,134 @@ const mysql = require('mysql2/promise')
 const { PrismaClient } = require('../../generated/prisma')
 const prisma = new PrismaClient({})
 const { parse } = require('json2csv')
-
+const session = require("express-session")
 
 exports.postGenerateCsv = async (req, res) => {
-	let connection
-	try {
-		const userId = req.session.user?.id
-		const connectedDb = req.session.connectedDb
-		const selectedTables = JSON.parse(req.body.selectedTables)
-
-		if (selectedTables.length === 0) {
-			return res.render('/generate', {
-				toast: {
-					type: "error",
-					message: "No table selected"
-				}
-			})
-		}
-
-		const tableName = selectedTables[0] /// pour l'instant il n'y qu'une table qui est sélec
-		const queryText = `SELECT * FROM ${tableName}`
-
-		connection = await mysql.createConnection({
-			host: connectedDb.host,
-			port: connectedDb.port,
-			user: connectedDb.username,
-			password: connectedDb.password,
-			database: connectedDb.name
-		})
+    let connection
+    try {
+        const userId = req.session.user?.id
+        const connectedDb = req.session.connectedDb
+        let selectedTable = req.body.selectedTables
 
 
-		const [rows] = await connection.execute(queryText)
+        if (typeof selectedTable === 'string') { /// typeof sur vérifie le type de la variable ici string
+            try {
+                selectedTable = JSON.parse(selectedTable) /// parse le json
+            } catch (error) {
+                return res.render('pages/generate.twig', {
+                    toast: {
+                        type: "error",
+                        message: "Invalid table selection format"
+                    }
+                })
+            }
+        }
 
-		/// vérif si données présentent
-		if (!rows || rows.length === 0) {
-			return res.render('/generate', {
-				toast: {
-					type: "error",
-					message: "No data found in the selected table."
-				}
-			})
-		}
+        if (Array.isArray(selectedTable)) { /// sélectionne seulement le premier fichier  - temporaire
+            selectedTable = selectedTable[0]
+        }
 
-		/// créa fichier csv
-		const csv = parse(rows)
-		const timestamp = Date.now()
-		const fileName = `${tableName}_${timestamp}.csv`
-		const filePath = path.join(__dirname, '../../uploads/exports', fileName)
+        if (!selectedTable) {
+            return res.render('pages/generate.twig', {
+                toast: {
+                    type: "error",
+                    message: "No table selected"
+                }
+            })
+        }
 
-		const exportDir = path.join(__dirname, '../../uploads/exports')
-		if (!fs.existsSync(exportDir)) {
-			fs.mkdirSync(exportDir, { recursive: true })
-		}
+        connection = await mysql.createConnection({
+            host: connectedDb.host,
+            port: connectedDb.port,
+            user: connectedDb.username,
+            password: connectedDb.password,
+            database: connectedDb.name
+        })
 
-		fs.writeFileSync(filePath, csv)
+        const queryText = `SELECT * FROM \`${selectedTable}\``
+        const [rows] = await connection.execute(queryText)
 
-		let dbConnection
+        if (!rows || rows.length === 0) {
+            return res.render('pages/generate.twig', {
+                toast: {
+                    type: "error",
+                    message: `No data found in the table: ${selectedTable}`
+                }
+            })
+        }
 
-		///verif si l'id est déjà dans la co sinon on parcourt tout
-		if (connectedDb.id) {
-			dbConnection = { id: connectedDb.id }
-		} else {
-			const allUserConnections = await prisma.dataBaseConnection.findMany({
-				where: { user_id: userId }
-			})
+        const csv = parse(rows)
+        const timestamp = Date.now()
+        const fileName = `${selectedTable}_${timestamp}.csv`
+        const exportDir = path.join(__dirname, '../../uploads')
+        const filePath = path.join(exportDir, fileName)
 
-			dbConnection = await prisma.dataBaseConnection.findFirst({
-				where: {
-					host: connectedDb.host,
-					port: parseInt(connectedDb.port),
-					name: connectedDb.name,
-					user_id: userId
-				}
-			})
-		}
+        if (!fs.existsSync(exportDir)) {
+            fs.mkdirSync(exportDir, { recursive: true })
+        }
 
-		const sqlQuery = await prisma.sqlQuery.create({
-			data: {
-				name: `Query on ${tableName}`,
-				sql_text: queryText,
-				created_at: new Date(),
-				id_dataBaseConnection: dbConnection.id,
-			}
-		})
+        fs.writeFileSync(filePath, csv)
 
-		await prisma.csvFile.create({
-			data: {
-				name_csv: fileName,
-				path: `/exports/${fileName}`,
-				created_at: new Date(),
-				sqlQuery_id: sqlQuery.id,
-				user_id: userId,
-			}
-		})
-		req.flash('success', `CSV generated successfully! ${rows.length} rows exported.`)
-		return res.redirect("/")
+        let dbConnection
+        if (connectedDb.id) {
+            dbConnection = { id: connectedDb.id }
+        } else {
+            dbConnection = await prisma.dataBaseConnection.findFirst({
+                where: {
+                    host: connectedDb.host,
+                    port: parseInt(connectedDb.port),
+                    name: connectedDb.name,
+                    user_id: userId
+                }
+            })
+        }
 
-	} catch (error) {
-		console.log(error);
-		return res.redirect("/generate")
-	} finally {
-		///fermeture de co + fermeture co prisma
-		if (connection) {
-			try {
-				await connection.end()
-			} catch (error) {
-				console.log(error);
+        const sqlQuery = await prisma.sqlQuery.create({
+            data: {
+                name: `Query on ${selectedTable}`,
+                sql_text: `SELECT * FROM \`${selectedTable}\``,
+                created_at: new Date(),
+                id_dataBaseConnection: dbConnection.id,
+            }
+        })
 
-			}
-		}
-		try {
-			await prisma.$disconnect()
-		} catch (error) {
-			console.log(error);
-		}
-	}
+        await prisma.csvFile.create({
+            data: {
+                name_csv: fileName,
+                path: `/exports/${fileName}`,
+                created_at: new Date(),
+                sqlQuery_id: sqlQuery.id,
+                user_id: userId,
+            }
+        })
+        console.log(req.session.user);
+        console.log(req.session.connectedDb);
+        return res.render("pages/dashboard.twig", {
+            toast: {
+                type: "success",
+                message: `CSV generated successfully from ${selectedTable}. File saved as: ${fileName}`
+            }, connectedDbs: [req.session.connectedDb], user: req.session.user
+        })
+
+    } catch (error) {
+        return res.render("pages/generate.twig", {
+            twig: {
+                type: "error",
+                message: "Cannot generate"
+            }
+        })
+    } finally {
+        if (connection) {
+            try {
+                await connection.end()
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        try {
+            await prisma.$disconnect()
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
