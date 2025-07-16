@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<title>Configure Chart</title>
+
+
+		{% block style %}
+			<link rel="stylesheet" href="/assets/css/settings.css">
+			<link rel="stylesheet" href="/assets/css/wizard.css">
+		{% endblock %}
+
+		{% block title %}
+			<title>Configure Chart</title>
+		{% endblock %}
+	</head>
+	<body>
+		{% block main %}
+			<form id="chartForm" action="/submit-chart-config" method="post">
+				<div id="step1" class="step active">
+					<h2>Select X and Y Axes</h2>
+					<label for="xAxis">X Axis:</label>
+					<select name="xAxis" id="xAxis">
+						{% for column in columns %}
+							<option value="{{ column }}">{{ column }}</option>
+						{% endfor %}
+					</select>
+					<br>
+					<label for="yAxis">Y Axis:</label>
+					<select name="yAxis" id="yAxis">
+						{% for column in columns %}
+							<option value="{{ column }}">{{ column }}</option>
+						{% endfor %}
+					</select>
+					<button type="button" id="nextStep1">Next</button>
+				</div>
+
+				<div id="step2" class="step">
+					<h2>Select Chart Style</h2>
+					<select name="chartStyle">
+						<option value="bar">Bar Chart</option>
+						<option value="line">Line Chart</option>
+						<option value="pie">Pie Chart</option>
+					</select>
+					<button type="button" id="nextStep2">Next</button>
+				</div>
+
+				<div id="step3" class="step">
+					<h2>Generate Chart</h2>
+					<button type="submit">Generate Chart</button>
+				</div>
+			</form>
+			<canvas id="chartCanvas" width="400" height="400"></canvas>
+		{% endblock %}
+
+		{% block script %}
+			<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+			<script src="/js/wizard.js"></script>
+		{% endblock %}
+	</body>
+</html>

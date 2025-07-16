@@ -15,13 +15,12 @@ exports.getLogin = async (req, res) => { /// affiche login
     try {
         res.render('pages/login.twig')
     } catch (error) {
-        console.log(error);
+        console.log(error)
         res.redirect('/login')
     }
 }
 
 exports.getDashboard = async (req, res) => { /// affiche le tableau de bord
-
     try {
         const user = await prisma.user.findUnique({ // affiche la session en cours
             where: {
@@ -36,7 +35,7 @@ exports.getDashboard = async (req, res) => { /// affiche le tableau de bord
         const selectedDb = req.session.connectedDb
         res.render("pages/dashboard.twig", { user: req.session.user, connectedDbs: connectedDbs, selectedDb })
     } catch (error) {
-        console.log(error);
+        console.log(error)
         res.redirect('/login')
     }
 }
@@ -77,14 +76,14 @@ exports.getGenerate = async (req, res) => {
             }
         })
 
-        let tables = [];
+        let tables = []
 
         try {
             tables = await dynamicPrisma.$queryRaw`
 				SELECT table_name FROM information_schema.tables WHERE table_schema = ${name}
 			`
         } finally {
-            await dynamicPrisma.$disconnect();
+            await dynamicPrisma.$disconnect()
         }
         res.render("pages/generate.twig", {
             user: req.session.user,
@@ -92,6 +91,49 @@ exports.getGenerate = async (req, res) => {
             tables: tables.map(row => row.table_name)
         })
     } catch (error) {
-        console.error(error);
+        console.error(error)
+    }
+}
+exports.getJoin = async (req, res) => {
+    try {
+        const userId = req.session.user?.id
+        const connectedDb = req.session.connectedDb
+
+        return res.render("pages/join.twig", {
+            connectedDbs: [req.session.connectedDb],
+            user: req.session.user
+        })
+    } catch (error) {
+        console.error(error)
+        return res.render("pages/generate.twig", {
+            toast: {
+                type: "error",
+                message: "Cannot display join form"
+            }
+        })
+    }
+}
+
+exports.getWizard = async (req, res) => {
+    try {
+        const selectedDb = req.session.connectedDb
+        if (!selectedDb) {
+            req.flash("toast", {
+                type: "error",
+                message: "No database selected"
+            })
+            return res.redirect("/dashboard")
+        }
+
+        const columns = await prisma.$queryRaw`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ${selectedDb.name} AND TABLE_NAME = 'your_table_name'`
+
+        res.render("pages/wizard.twig", { columns: columns.map(col => col.COLUMN_NAME) })
+    } catch (error) {
+        console.error(error)
+        req.flash("toast", {
+            type: "error",
+            message: "Error loading wizard"
+        })
+        res.redirect("/login")
     }
 }
