@@ -46,10 +46,10 @@ exports.getAddConnection = async (req, res) => {
 
     res.render("pages/addConnection.twig", {
         formData: {
-            type: type || '',
-            host: host || '',
-            port: port || '',
-            name: name || '',
+            type: type,
+            host: host,
+            port: port,
+            name: name,
             username: '',
             password: ''
         },

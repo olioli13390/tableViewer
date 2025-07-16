@@ -3,6 +3,6 @@ const router = express.Router()
 const sqlQueryController = require("../controllers/sqlQueryController")
 const authguard = require('../services/auth')
 
-router.post("/generate", authguard, sqlQueryController.postGenerateCsv)
+router.post("/generate", authguard, sqlQueryController.prepareJoinTables )
 
 module.exports = router

@@ -6,7 +6,7 @@ const prisma = new PrismaClient({})
 const { parse } = require('json2csv')
 const session = require("express-session")
 
-exports.postGenerateCsv = async (req, res) => {
+exports.prepareJoinTables = async (req, res) => {
     let connection
     try {
         const userId = req.session.user?.id
@@ -82,9 +82,11 @@ exports.postGenerateCsv = async (req, res) => {
                 commonColumns[`${table1}_${table2}`] = commonCols
             }
         }
+
+
         return res.render("pages/join.twig", {
             tablesData: tablesData,
-            commonColumns : commonColumns,
+            commonColumns: commonColumns,
             tablesColumns: tablesColumns,
             selectedTables: selectedTables,
             connectedDbs: [req.session.connectedDb],
@@ -115,4 +117,3 @@ exports.postGenerateCsv = async (req, res) => {
         }
     }
 }
-
