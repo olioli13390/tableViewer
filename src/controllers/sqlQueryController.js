@@ -1,130 +1,141 @@
+const fs = require("fs");
+const path = require("path");
+const { PrismaClient } = require("../../generated/prisma");
+const createCsvWriter = require("csv-writer").createObjectCsvWriter;
+const csvParser = require("csv-parser");
 
-const mysql = require('mysql2/promise')
-const { PrismaClient } = require('../../generated/prisma')
-const prisma = new PrismaClient({})
-const { parse } = require('json2csv')
-
-exports.postJoin = async (req, res) => {
-    let connection;
+exports.postGenerate = async (req, res) => {
     try {
-        const connectedDb = req.session.connectedDb
-        let selectedTables = req.body.selectedTables
+        const connectedDb = req.session.connectedDb;
+        if (!connectedDb) {
+            req.flash("toast", {
+                type: "error",
+                message: "No database connected."
+            });
+            return res.redirect("/");
+        }
 
+        const { host, port, name, username, password } = connectedDb;
+        
+        let selectedTables = req.body.selectedTables;
+        if (!selectedTables) {
+            req.flash("toast", { type: "error", message: "No tables selected." });
+            return res.redirect("/generate");
+        }
+
+        // Si les données sont envoyées sous forme de JSON string (ex: '["table1", "table2"]')
         if (typeof selectedTables === 'string') {
             try {
                 selectedTables = JSON.parse(selectedTables);
-            } catch (error) {
-                return res.render('pages/generate.twig', {
-                    toast: {
-                        type: "error",
-                        message: "Invalid table selection format"
-                    }
-                });
+            } catch (e) {
+                req.flash("toast", { type: "error", message: "Invalid table selection." });
+                return res.redirect("/generate");
             }
         }
 
-        if (!Array.isArray(selectedTables)) {
-            selectedTables = [selectedTables];
+        if (selectedTables.length !== 2) {
+            req.flash("toast", { type: "error", message: "Please select exactly two tables." });
+            return res.redirect("/generate");
         }
 
-        if (!selectedTables || selectedTables.length === 0) {
-            return res.render('pages/generate.twig', {
-                toast: {
-                    type: "error",
-                    message: "No table selected"
-                }
-            });
-        }
+        const [table1, table2] = selectedTables;
 
-        connection = await mysql.createConnection({
-            host: connectedDb.host,
-            port: connectedDb.port,
-            user: connectedDb.username,
-            password: connectedDb.password,
-            database: connectedDb.name
-        });
 
-        const tablesData = {};
-        const tablesColumns = {};
-
-        for (const selectedTable of selectedTables) {
-            const queryText = `SELECT * FROM \`${selectedTable}\``;
-            const [rows] = await connection.execute(queryText);
-
-            if (!rows || rows.length === 0) {
-                return res.render('pages/generate.twig', {
-                    toast: {
-                        type: "error",
-                        message: `No data found in the table: ${selectedTable}`
-                    }
-                });
-            }
-
-            tablesData[selectedTable] = rows;
-            tablesColumns[selectedTable] = Object.keys(rows[0]);
-        }
-
-        const commonColumns = {};
-
-        for (let i = 0; i < selectedTables.length; i++) {
-            for (let j = i + 1; j < selectedTables.length; j++) {
-                const table1 = selectedTables[i];
-                const table2 = selectedTables[j];
-                const commonCols = tablesColumns[table1].filter(column =>
-                    tablesColumns[table2].includes(column)
-                );
-                commonColumns[`${table1}_${table2}`] = commonCols;
-            }
-        }
-
-        // Prépare les données pour la requête SQL
-        const sqlQueryName = `Join Query for ${selectedTables.join(', ')}`
-        const sqlQueryText = `SELECT * FROM ${selectedTables.join(', ')} WHERE ${Object.keys(commonColumns).map(pair => {
-            const [table1, table2] = pair.split('_')
-            const commonCol = commonColumns[pair][0] // Suppose qu'il y a au moins une colonne commune
-            return `${table1}.${commonCol} = ${table2}.${commonCol}`
-        }).join(' AND ')}`
-
-        // Crée une nouvelle entrée dans la table SqlQuery
-        const sqlQuery = await prisma.sqlQuery.create({
-            data: {
-                name: sqlQueryName,
-                sql_text: sqlQueryText,
-                created_at: new Date(),
-                id_dataBaseConnection: connectedDb.id,
-            },
-        })
-
-        return res.render("pages/join.twig", {
-            tablesData: tablesData,
-            commonColumns: commonColumns,
-            tablesColumns: tablesColumns,
-            selectedTables: selectedTables,
-            connectedDbs: [req.session.connectedDb],
-            user: req.session.user,
-            sqlQuery: sqlQuery, // Passe la requête SQL à la vue si nécessaire
-        })
-
-    } catch (error) {
-        console.error(error);
-        return res.render("pages/generate.twig", {
-            toast: {
+        if (!table1 || !table2) {
+            req.flash("toast", {
                 type: "error",
-                message: "Cannot retrieve data from tables"
+                message: "Please select two tables."
+            });
+            return res.redirect("/generate");
+        }
+
+        const databaseUrl = `mysql://${encodeURIComponent(username)}:${encodeURIComponent(password)}@${host}:${port}/${name}`;
+        const prisma = new PrismaClient({
+            datasources: {
+                db: { url: databaseUrl }
             }
         });
-    } finally {
-        if (connection) {
-            try {
-                await connection.end();
-            } catch (error) {
-                console.log(error);
-            }
-        }
+
+        let joinColumn = null;
+
         try {
+            // Trouver une colonne commune pour faire la jointure
+            const columns1 = await prisma.$queryRaw`
+                SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_SCHEMA = ${name} AND TABLE_NAME = ${table1}
+            `;
+
+            const columns2 = await prisma.$queryRaw`
+                SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_SCHEMA = ${name} AND TABLE_NAME = ${table2}
+            `;
+
+            const set1 = new Set(columns1.map(c => c.COLUMN_NAME));
+            const set2 = new Set(columns2.map(c => c.COLUMN_NAME));
+
+            const commonColumns = [...set1].filter(col => set2.has(col));
+
+            if (commonColumns.length === 0) {
+                req.flash("toast", {
+                    type: "error",
+                    message: "No common columns found for a JOIN."
+                });
+                return res.redirect("/generate");
+            }
+
+            joinColumn = commonColumns[0]; // Prend la première colonne commune
+
+            const result = await prisma.$queryRawUnsafe(`
+                SELECT * FROM \`${table1}\` t1
+                LEFT JOIN \`${table2}\` t2 ON t1.\`${joinColumn}\` = t2.\`${joinColumn}\`
+            `);
+
+            if (!result || result.length === 0) {
+                req.flash("toast", {
+                    type: "warning",
+                    message: "No data returned from the JOIN query."
+                });
+                return res.redirect("/generate");
+            }
+
+            // Créer le CSV
+            const headers = Object.keys(result[0]).map(header => ({ id: header, title: header }));
+            const csvPath = path.join(__dirname, "..", "tmp", `join_result_${Date.now()}.csv`);
+
+            const csvWriter = createCsvWriter({
+                path: csvPath,
+                header: headers
+            });
+
+            await csvWriter.writeRecords(result);
+
+            // Parser le CSV pour extraire les données
+            const parsedRows = [];
+            const stream = fs.createReadStream(csvPath).pipe(csvParser());
+
+            stream.on("data", (row) => {
+                parsedRows.push(row);
+            });
+
+            stream.on("end", () => {
+                req.session.joinedData = {
+                    headers: Object.keys(parsedRows[0] || {}),
+                    rows: parsedRows
+                };
+
+                res.redirect("/wizard");
+            });
+
+        } finally {
             await prisma.$disconnect();
-        } catch (error) {
-            console.log(error);
         }
+
+    } catch (err) {
+        console.error(err);
+        req.flash("toast", {
+            type: "error",
+            message: "An error occurred during generation."
+        });
+        return res.redirect("/generate");
     }
-}
+};

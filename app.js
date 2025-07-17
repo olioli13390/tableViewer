@@ -5,8 +5,6 @@ const userRoutes = require('./src/routes/userRoutes')
 const mainRoutes = require('./src/routes/mainRoutes')
 const dataBaseConnectionRoutes = require("./src/routes/dataBaseConnectionRoutes")
 const sqlQueryRoutes = require("./src/routes/sqlQueryRoutes")
-const csvFileRoutes = require("./src/routes/csvFileRoutes")
-const visualizationRoutes = require("./src/routes/visualizationRoutes")
 
 const app = express()
 
@@ -34,8 +32,6 @@ app.use(userRoutes)
 app.use(mainRoutes)
 app.use(dataBaseConnectionRoutes)
 app.use(sqlQueryRoutes)
-app.use(csvFileRoutes)
-app.use(visualizationRoutes)
 
 app.listen(process.env.PORT, (err) => {
     if (err) {
