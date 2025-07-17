@@ -96,3 +96,18 @@ exports.getGenerate = async (req, res) => {
         console.error(error)
     }
 }
+
+exports.getWizard = async (req, res) => {
+    const data = req.session.joinedData
+
+    if (!data) {
+        console.log("No data found in session.")
+        return res.redirect("/generate")
+    }
+
+    res.render("pages/wizard.twig", {
+        headers: data.headers,
+        rows: data.rows,      
+        user: req.session.user
+    })
+}

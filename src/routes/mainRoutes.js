@@ -8,6 +8,7 @@ router.get('/login', mainController.getLogin)
 router.get('/', authguard, mainController.getDashboard)
 router.get('/addConnection', authguard, mainController.getAddConnection)
 router.get('/generate', authguard, mainController.getGenerate)
+router.get('/wizard', authguard, mainController.getWizard)
 
 
 module.exports = router
