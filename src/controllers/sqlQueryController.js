@@ -1,15 +1,11 @@
-const fs = require('fs')
-const path = require('path')
 const mysql = require('mysql2/promise')
 const { PrismaClient } = require('../../generated/prisma')
 const prisma = new PrismaClient({})
 const { parse } = require('json2csv')
-const session = require("express-session")
 
 exports.prepareJoinTables = async (req, res) => {
     let connection
     try {
-        const userId = req.session.user?.id
         const connectedDb = req.session.connectedDb
         let selectedTables = req.body.selectedTables
 
@@ -67,15 +63,12 @@ exports.prepareJoinTables = async (req, res) => {
             tablesColumns[selectedTable] = Object.keys(rows[0])
         }
 
-
         const commonColumns = {}
 
         for (let i = 0; i < selectedTables.length; i++) {
             for (let j = i + 1; j < selectedTables.length; j++) {
                 const table1 = selectedTables[i]
                 const table2 = selectedTables[j]
-
-
                 const commonCols = tablesColumns[table1].filter(column =>
                     tablesColumns[table2].includes(column)
                 )
@@ -83,6 +76,23 @@ exports.prepareJoinTables = async (req, res) => {
             }
         }
 
+        // Prépare les données pour la requête SQL
+        const sqlQueryName = `Join Query for ${selectedTables.join(', ')}`
+        const sqlQueryText = `SELECT * FROM ${selectedTables.join(', ')} WHERE ${Object.keys(commonColumns).map(pair => {
+            const [table1, table2] = pair.split('_')
+            const commonCol = commonColumns[pair][0] // Suppose qu'il y a au moins une colonne commune
+            return `${table1}.${commonCol} = ${table2}.${commonCol}`
+        }).join(' AND ')}`
+
+        // Crée une nouvelle entrée dans la table SqlQuery
+        const sqlQuery = await prisma.sqlQuery.create({
+            data: {
+                name: sqlQueryName,
+                sql_text: sqlQueryText,
+                created_at: new Date(),
+                id_dataBaseConnection: connectedDb.id,
+            },
+        })
 
         return res.render("pages/join.twig", {
             tablesData: tablesData,
@@ -90,9 +100,9 @@ exports.prepareJoinTables = async (req, res) => {
             tablesColumns: tablesColumns,
             selectedTables: selectedTables,
             connectedDbs: [req.session.connectedDb],
-            user: req.session.user
+            user: req.session.user,
+            sqlQuery: sqlQuery, // Passe la requête SQL à la vue si nécessaire
         })
-
 
     } catch (error) {
         console.error(error)

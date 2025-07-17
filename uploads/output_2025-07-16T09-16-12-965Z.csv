@@ -1,6 +1,0 @@
-"id","nom_complet","email","telephone","adresse","date_commande","montant_total","statut","date_livraison_prevue","adresse_livraison"
-1,"Jean Dupont","jean.dupont@example.com","0123456789","123 Rue de Paris, Paris","2023-10-01T08:00:00.000Z","99.99","livré","2023-10-04T22:00:00.000Z","123 Rue de Paris, Paris"
-2,"Marie Martin","marie.martin@example.com","0234567890","456 Avenue des Champs, Lyon","2023-10-02T09:30:00.000Z","149.99","expédié","2023-10-05T22:00:00.000Z","456 Avenue des Champs, Lyon"
-3,"Pierre Durand","pierre.durand@example.com","0345678901","789 Boulevard Saint-Germain, Marseille","2023-10-03T12:15:00.000Z","199.99","traité","2023-10-06T22:00:00.000Z","789 Boulevard Saint-Germain, Marseille"
-4,"Sophie Leroy","sophie.leroy@example.com","0456789012","101 Rue de la République, Toulouse","2023-10-04T07:45:00.000Z","79.99","en attente","2023-10-07T22:00:00.000Z","101 Rue de la République, Toulouse"
-5,"Lucie Moreau","lucie.moreau@example.com","0567890123","202 Rue de Rivoli, Nice","2023-10-05T14:20:00.000Z","249.99","en attente","2023-10-09T22:00:00.000Z","202 Rue de Rivoli, Nice"
