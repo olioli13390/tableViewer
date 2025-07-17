@@ -1,0 +1,16 @@
+id,date_commande,montant,statut,date_livraison,adresse_livraison,consommateur_id,nom,email,telephone,adresse
+1,Sun Oct 01 2023 12:00:00 GMT+0200 (heure d’été d’Europe centrale),99.99,livré,Thu Oct 05 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"123 Rue de Paris, Paris",1,Jean Dupont,jean.dupont@example.com,0123456789,"123 Rue de Paris, Paris"
+2,Mon Oct 02 2023 13:30:00 GMT+0200 (heure d’été d’Europe centrale),149.99,expédié,Fri Oct 06 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"456 Avenue des Champs, Lyon",2,Marie Martin,marie.martin@example.com,0234567890,"456 Avenue des Champs, Lyon"
+3,Tue Oct 03 2023 16:15:00 GMT+0200 (heure d’été d’Europe centrale),199.99,traité,Sat Oct 07 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"789 Boulevard Saint-Germain, Marseille",3,Pierre Durand,pierre.durand@example.com,0345678901,"789 Boulevard Saint-Germain, Marseille"
+4,Wed Oct 04 2023 11:45:00 GMT+0200 (heure d’été d’Europe centrale),79.99,en attente,Sun Oct 08 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"101 Rue de la République, Toulouse",4,Sophie Leroy,sophie.leroy@example.com,0456789012,"101 Rue de la République, Toulouse"
+5,Thu Oct 05 2023 18:20:00 GMT+0200 (heure d’été d’Europe centrale),249.99,en attente,Tue Oct 10 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"202 Rue de Rivoli, Nice",5,Lucie Moreau,lucie.moreau@example.com,0567890123,"202 Rue de Rivoli, Nice"
+,Thu Oct 19 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),200.85,expédié,Sun Oct 22 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"456 Avenue des Champs, Lyon",2,,,,
+,Sun Oct 22 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),142.52,livré,Thu Oct 26 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"456 Avenue des Champs, Lyon",2,,,,
+,Sat Oct 28 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),269.7,en attente,Mon Nov 06 2023 01:00:00 GMT+0100 (heure normale d’Europe centrale),"123 Rue de Paris, Paris",1,,,,
+,Sat Oct 07 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),289.83,livré,Mon Oct 09 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"789 Boulevard Saint-Germain, Marseille",3,,,,
+,Tue Oct 10 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),127.36,en attente,Sat Oct 14 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"202 Rue de Rivoli, Nice",5,,,,
+,Fri Nov 03 2023 01:00:00 GMT+0100 (heure normale d’Europe centrale),241.68,expédié,Tue Nov 07 2023 01:00:00 GMT+0100 (heure normale d’Europe centrale),"101 Rue de la République, Toulouse",4,,,,
+,Tue Oct 10 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),168.09,traité,Sat Oct 14 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"101 Rue de la République, Toulouse",4,,,,
+,Sat Oct 14 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),179.05,en attente,Sun Oct 22 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"789 Boulevard Saint-Germain, Marseille",3,,,,
+,Mon Oct 16 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),279.17,en attente,Tue Oct 17 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"202 Rue de Rivoli, Nice",5,,,,
+,Thu Oct 26 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),39.89,livré,Sat Oct 28 2023 02:00:00 GMT+0200 (heure d’été d’Europe centrale),"789 Boulevard Saint-Germain, Marseille",3,,,,

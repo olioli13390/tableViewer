@@ -1,7 +1,106 @@
+/* Wizard container */
+#wizardForm {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Step */
 .step {
-    display: none;
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .step.active {
-    display: block;
+  display: block;
 }
+
+.step h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Inputs, select */
+input[type="color"],
+select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* Checkboxes */
+label {
+  display: block;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Buttons */
+button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 0.5rem 0.25rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* Step indicator (optional) */
+.step-indicator {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.step-indicator span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 4px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.step-indicator .active {
+  background-color: #007bff;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.step {
+  display: none;
+}
+
+.step.active {
+  display: block;
+}
+
