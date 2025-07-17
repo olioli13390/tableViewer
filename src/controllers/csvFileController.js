@@ -41,10 +41,10 @@ exports.postGenerateCsv = async (req, res) => {
 
         const columns = Object.keys(joinedData[0] || {})
 
-        res.render('pages/csv.twig', {
-            columns,
-            data: joinedData
-        })
+        res.render('pages/wizard.twig', {
+            columns: columns,
+            joinedData: JSON.stringify(joinedData)
+        });
     } catch (error) {
         console.log(error)
 
