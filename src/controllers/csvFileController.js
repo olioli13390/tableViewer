@@ -41,7 +41,7 @@ exports.postGenerateCsv = async (req, res) => {
 
         const columns = Object.keys(joinedData[0] || {})
 
-        res.render('pages/generate-csv.twig', {
+        res.render('pages/csv.twig', {
             columns,
             data: joinedData
         })
@@ -59,3 +59,4 @@ exports.postGenerateCsv = async (req, res) => {
         }
     }
 }
+

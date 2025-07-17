@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Configure Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .step { display: none; }
+        .step.active { display: block; }
+    </style>
+</head>
+<body>
+    <form id="chartForm" action="/result" method="post">
+        <!-- Step 1: Select Columns -->
+        <div id="step1" class="step active">
+            <h2>Select X and Y Axes</h2>
+            <label for="xAxis">X Axis:</label>
+            <select name="xAxis" id="xAxis">
+                {% for column in columns %}
+                    <option value="{{ column }}">{{ column }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="yAxis">Y Axis:</label>
+            <select name="yAxis" id="yAxis">
+                {% for column in columns %}
+                    <option value="{{ column }}">{{ column }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" onclick="nextStep(1)">Next</button>
+        </div>
+
+        <!-- Step 2: Select Chart Style -->
+        <div id="step2" class="step">
+            <h2>Select Chart Style</h2>
+            <select name="chartStyle">
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="pie">Pie Chart</option>
+            </select>
+            <button type="button" onclick="nextStep(2)">Next</button>
+        </div>
+
+        <!-- Step 3: Select Bar Color -->
+        <div id="step3" class="step">
+            <h2>Select Bar Color</h2>
+            <input type="color" name="barColor" value="#36A2EB">
+            <button type="button" onclick="nextStep(3)">Next</button>
+        </div>
+
+        <!-- Step 4: Generate Chart -->
+        <div id="step4" class="step">
+            <h2>Generate Chart</h2>
+            <button type="submit">Generate Chart</button>
+        </div>
+    </form>
+
+    <script>
+        function nextStep(currentStep) {
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + (currentStep + 1)).classList.add('active');
+        }
+    </script>
+</body>
+</html>

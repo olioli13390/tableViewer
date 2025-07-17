@@ -15,7 +15,7 @@ exports.getLogin = async (req, res) => { /// affiche login
     try {
         res.render('pages/login.twig')
     } catch (error) {
-        console.log(error);
+        console.log(error)
         res.redirect('/login')
     }
 }
@@ -36,7 +36,7 @@ exports.getDashboard = async (req, res) => { /// affiche le tableau de bord
         const selectedDb = req.session.connectedDb
         res.render("pages/dashboard.twig", { user: req.session.user, connectedDbs: connectedDbs, selectedDb })
     } catch (error) {
-        console.log(error);
+        console.log(error)
         res.redirect('/login')
     }
 }
@@ -77,14 +77,14 @@ exports.getGenerate = async (req, res) => {
             }
         })
 
-        let tables = [];
+        let tables = []
 
         try {
             tables = await dynamicPrisma.$queryRaw`
 				SELECT table_name FROM information_schema.tables WHERE table_schema = ${name}
 			`
         } finally {
-            await dynamicPrisma.$disconnect();
+            await dynamicPrisma.$disconnect()
         }
         res.render("pages/generate.twig", {
             user: req.session.user,
@@ -92,6 +92,46 @@ exports.getGenerate = async (req, res) => {
             tables: tables.map(row => row.table_name)
         })
     } catch (error) {
-        console.error(error);
+        console.error(error)
+    }
+}
+
+exports.getWizard = async (req, res) => {
+    try {
+        const columns = req.session.columns || []
+        const joinedData = req.session.joinedData || []
+
+        return res.render("pages/csv.twig", {
+            columns: columns,
+            joinedData: JSON.stringify(joinedData)
+        })
+    } catch (error) {
+        console.error(error)
+        return res.render("pages/generate.twig", {
+            toast: {
+                type: "error",
+                message: "Cannot display CSV page"
+            }
+        })
+    }
+}
+
+exports.getResult = async (req, res) => {
+    try {
+        const joinedData = req.session.joinedData || []
+        const csvFileId = req.session.csvFileId || null
+
+        return res.render("pages/result.twig", {
+            joinedData: JSON.stringify(joinedData),
+            csvFileId: csvFileId
+        })
+    } catch (error) {
+        console.error(error)
+        return res.render("pages/generate.twig", {
+            toast: {
+                type: "error",
+                message: "Cannot display result page"
+            }
+        })
     }
 }

@@ -4,6 +4,6 @@ const csvController = require("../controllers/csvFileController");
 const authGuard = require('../services/auth');
 
 
-router.post("/generate/csv", authGuard, csvController.postGenerateCsv);
+router.post("/generate/wizard", authGuard, csvController.postGenerateCsv);
 
 module.exports = router;
