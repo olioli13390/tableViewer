@@ -1,0 +1,16 @@
+"id","date_commande","montant","statut","date_livraison","adresse_livraison","consommateur_id","nom","email","telephone","adresse"
+1,"2023-10-01T08:00:00.000Z","99.99","livré","2023-10-04T22:00:00.000Z","123 Rue de Paris, Paris",1,"Jean Dupont","jean.dupont@example.com","0123456789","123 Rue de Paris, Paris"
+2,"2023-10-02T09:30:00.000Z","149.99","expédié","2023-10-05T22:00:00.000Z","456 Avenue des Champs, Lyon",2,"Marie Martin","marie.martin@example.com","0234567890","456 Avenue des Champs, Lyon"
+3,"2023-10-03T12:15:00.000Z","199.99","traité","2023-10-06T22:00:00.000Z","789 Boulevard Saint-Germain, Marseille",3,"Pierre Durand","pierre.durand@example.com","0345678901","789 Boulevard Saint-Germain, Marseille"
+4,"2023-10-04T07:45:00.000Z","79.99","en attente","2023-10-07T22:00:00.000Z","101 Rue de la République, Toulouse",4,"Sophie Leroy","sophie.leroy@example.com","0456789012","101 Rue de la République, Toulouse"
+5,"2023-10-05T14:20:00.000Z","249.99","en attente","2023-10-09T22:00:00.000Z","202 Rue de Rivoli, Nice",5,"Lucie Moreau","lucie.moreau@example.com","0567890123","202 Rue de Rivoli, Nice"
+6,"2023-10-18T22:00:00.000Z","200.85","expédié","2023-10-21T22:00:00.000Z","456 Avenue des Champs, Lyon",2,,,,
+7,"2023-10-21T22:00:00.000Z","142.52","livré","2023-10-25T22:00:00.000Z","456 Avenue des Champs, Lyon",2,,,,
+8,"2023-10-27T22:00:00.000Z","269.70","en attente","2023-11-05T23:00:00.000Z","123 Rue de Paris, Paris",1,,,,
+9,"2023-10-06T22:00:00.000Z","289.83","livré","2023-10-08T22:00:00.000Z","789 Boulevard Saint-Germain, Marseille",3,,,,
+10,"2023-10-09T22:00:00.000Z","127.36","en attente","2023-10-13T22:00:00.000Z","202 Rue de Rivoli, Nice",5,,,,
+11,"2023-11-02T23:00:00.000Z","241.68","expédié","2023-11-06T23:00:00.000Z","101 Rue de la République, Toulouse",4,,,,
+12,"2023-10-09T22:00:00.000Z","168.09","traité","2023-10-13T22:00:00.000Z","101 Rue de la République, Toulouse",4,,,,
+13,"2023-10-13T22:00:00.000Z","179.05","en attente","2023-10-21T22:00:00.000Z","789 Boulevard Saint-Germain, Marseille",3,,,,
+14,"2023-10-15T22:00:00.000Z","279.17","en attente","2023-10-16T22:00:00.000Z","202 Rue de Rivoli, Nice",5,,,,
+15,"2023-10-25T22:00:00.000Z","39.89","livré","2023-10-27T22:00:00.000Z","789 Boulevard Saint-Germain, Marseille",3,,,,
