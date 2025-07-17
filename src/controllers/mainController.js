@@ -79,7 +79,6 @@ exports.getGenerate = async (req, res) => {
         })
 
         let tables = []
-        let tables = []
 
         try {
             tables = await dynamicPrisma.$queryRaw`
@@ -99,9 +98,6 @@ exports.getGenerate = async (req, res) => {
 }
 exports.getJoin = async (req, res) => {
     try {
-        const userId = req.session.user?.id
-        const connectedDb = req.session.connectedDb
-
         return res.render("pages/join.twig", {
             connectedDbs: [req.session.connectedDb],
             user: req.session.user
@@ -127,10 +123,10 @@ exports.getWizard = async (req, res) => {
             })
             return res.redirect("/dashboard")
         }
-
+        const tableName = req.query.table || req.session.selectedTable
         const columns = await prisma.$queryRaw`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ${selectedDb.name} AND TABLE_NAME = 'your_table_name'`
 
-        res.render("pages/wizard.twig", { columns: columns.map(col => col.COLUMN_NAME) })
+        res.render("pages/wizard.twig", { columns: columns.map(col => col.COLUMN_NAME), tableName: tableName })
     } catch (error) {
         console.error(error)
         req.flash("toast", {
@@ -141,25 +137,25 @@ exports.getWizard = async (req, res) => {
     }
 }
 
-exports.getWizard = async (req, res) => {
-    try {
-        const columns = req.session.columns || []
-        const joinedData = req.session.joinedData || []
+// exports.getWizard = async (req, res) => {
+//     try {
+//         const columns = req.session.columns || []
+//         const joinedData = req.session.joinedData || []
 
-        return res.render("pages/csv.twig", {
-            columns: columns,
-            joinedData: JSON.stringify(joinedData)
-        })
-    } catch (error) {
-        console.error(error)
-        return res.render("pages/generate.twig", {
-            toast: {
-                type: "error",
-                message: "Cannot display CSV page"
-            }
-        })
-    }
-}
+//         return res.render("pages/csv.twig", {
+//             columns: columns,
+//             joinedData: JSON.stringify(joinedData)
+//         })
+//     } catch (error) {
+//         console.error(error)
+//         return res.render("pages/generate.twig", {
+//             toast: {
+//                 type: "error",
+//                 message: "Cannot display CSV page"
+//             }
+//         })
+//     }
+// }
 
 exports.getResult = async (req, res) => {
     try {
@@ -168,7 +164,8 @@ exports.getResult = async (req, res) => {
 
         return res.render("pages/result.twig", {
             joinedData: JSON.stringify(joinedData),
-            csvFileId: csvFileId
+            csvFileId: csvFileId,
+            columns: columns
         })
     } catch (error) {
         console.error(error)
