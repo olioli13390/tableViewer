@@ -1,0 +1,66 @@
+{% extends "../layout/base.twig" %}
+
+{% block style %}
+	<link rel="stylesheet" href="/assets/css/settings.css">
+	<link rel="stylesheet" href="/assets/css/visualization.css">
+
+	<style>
+		.visualization-container {
+			max-width: 800px;
+			margin: 40px auto;
+			padding: 2rem;
+			background-color: #fff;
+			border-radius: 1rem;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+		}
+
+		canvas {
+			background-color: {{backgroundColor}}
+			;
+			border-radius: 8px;
+		}
+	</style>
+{% endblock %}
+
+{% block title %}
+	<title>Visualization</title>
+{% endblock %}
+
+{% block main %}
+
+	<div class="visualization-container">
+		<h2>Visualization :
+			{{ chartType|capitalize }}</h2>
+		<canvas id="myChart" width="800" height="400"></canvas>
+	</div>
+{% endblock %}
+{% block script %}
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script>
+		const ctx = document.getElementById('myChart').getContext('2d');
+
+const chart = new Chart(ctx, {
+type: '{{ chartType }}',
+data: {
+labels: {{ labels| json_encode | raw }},
+datasets: {{ datasets|json_encode|raw }}
+},
+options: {
+responsive: true,
+plugins: {
+legend: {
+labels: {
+color: '#333'
+}
+}
+},
+scales: {
+y: {
+beginAtZero: true
+}
+}
+}
+});
+	</script>
+
+{% endblock %}
