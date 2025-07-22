@@ -14,37 +14,12 @@
 	<div class="visualization-container">
 		<h2>Visualization :
 			{{ chartType|capitalize }}</h2>
-		<canvas id="myChart" width="800" height="400"></canvas>
+		<canvas id="myChart" width="800" height="400" data-chart='{{ chartType }}' data-labels='{{ labels|json_encode|e('html_attr') }}' data-datasets='{{ datasets|json_encode|e('html_attr') }}'></canvas>
 	</div>
 {% endblock %}
 {% block script %}
+
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="/js/chartDisplay.js"></script>
-	<script>
-		const ctx = document.getElementById('myChart').getContext('2d');
-
-const chart = new Chart(ctx, {
-type: '{{ chartType }}',
-data: {
-labels: {{ labels| json_encode | raw }},
-datasets: {{ datasets|json_encode|raw }}
-},
-options: {
-responsive: true,
-plugins: {
-legend: {
-labels: {
-color: '#333'
-}
-}
-},
-scales: {
-y: {
-beginAtZero: true
-}
-}
-}
-});
-	</script>
 
 {% endblock %}

@@ -59,7 +59,6 @@ exports.postGenerate = async (req, res) => {
         let joinColumn = null;
 
         try {
-            // Trouver une colonne commune pour faire la jointure
             const columns1 = await prisma.$queryRaw`
                 SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
                 WHERE TABLE_SCHEMA = ${name} AND TABLE_NAME = ${table1}
